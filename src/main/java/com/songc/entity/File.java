@@ -17,7 +17,11 @@ public class File {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Long size;
+
+//    @Column(nullable = false)
+    private Long parentId;
 
     @Column(nullable = false)
     private Timestamp createdAt;
