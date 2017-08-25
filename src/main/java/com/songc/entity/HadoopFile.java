@@ -1,11 +1,12 @@
 package com.songc.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -13,17 +14,22 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class HadoopFile {
     @Id
     @GeneratedValue
     private Long hadoopFileId;
+
     @Column(nullable = false)
     private String path;
 
     private Integer childrenNum;
 
     @Column(nullable = false)
-    private Timestamp createdAt;
+    @CreatedDate
+    private Date createdAt;
+
     @Column(nullable = false)
-    private Timestamp updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 }

@@ -18,8 +18,8 @@ public class FolderServiceImp implements FolderService {
 
     @Override
     public Long save(Folder folder) {
-        folder.setCreatedAt(Timestamp.from(Instant.now()));
-        folder.setUpdatedAt(Timestamp.from(Instant.now()));
+//        folder.setCreatedAt(Timestamp.from(Instant.now()));
+//        folder.setUpdatedAt(Timestamp.from(Instant.now()));
         return folderDao.save(folder).getFolderId();
     }
 

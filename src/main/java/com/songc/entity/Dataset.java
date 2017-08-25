@@ -2,8 +2,12 @@ package com.songc.entity;
 
 import com.songc.entity.data.State;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -11,6 +15,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Dataset{
     @Id
     @GeneratedValue
@@ -29,10 +34,12 @@ public class Dataset{
     private String description;
 
     @Column(nullable = false)
-    private Timestamp createdAt;
+    @CreatedDate
+    private Date createdAt;
 
     @Column(nullable = false)
-    private Timestamp updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 
     private Long folderId;
 }

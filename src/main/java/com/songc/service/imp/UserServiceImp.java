@@ -23,8 +23,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Long addUser(User user) {
-        user.setCreatedAt(Timestamp.from(Instant.now()));
-        user.setUpdatedAt(Timestamp.from(Instant.now()));
         User user1=userDao.save(user);
         return user1.getUserId();
     }

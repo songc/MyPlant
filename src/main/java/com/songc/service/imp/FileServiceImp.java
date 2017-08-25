@@ -27,18 +27,12 @@ public class FileServiceImp implements FileService {
 
     @Override
     public String save(File file) {
-        file.setCreatedAt(Timestamp.from(Instant.now()));
-        file.setUpdatedAt(Timestamp.from(Instant.now()));
         fileDao.save(file);
         return "SUCCESS";
     }
 
     @Override
     public String save(List<File> files) {
-        for (File file : files) {
-            file.setCreatedAt(Timestamp.from(Instant.now()));
-            file.setUpdatedAt(Timestamp.from(Instant.now()));
-        }
         fileDao.save(files);
         return "SUCCESS";
     }

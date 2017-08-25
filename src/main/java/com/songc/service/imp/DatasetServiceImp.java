@@ -33,14 +33,12 @@ public class DatasetServiceImp implements DatasetService {
 
     @Override
     public Long save(Dataset dataset) {
-        //first create a folder with the dataset name and get the folder id.
+
         Folder folder = new Folder();
         folder.setName(dataset.getName());
         folder.setParentId(DEFAULT_Parent_ID);
         Long folderId = folderService.save(folder);
 
-        dataset.setCreatedAt(Timestamp.from(Instant.now()));
-        dataset.setUpdatedAt(Timestamp.from(Instant.now()));
         dataset.setFolderId(folderId);
         return datasetDao.save(dataset).getDatasetId();
     }

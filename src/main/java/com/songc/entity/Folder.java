@@ -1,9 +1,13 @@
 package com.songc.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Folder {
     @Id
     @GeneratedValue
@@ -24,9 +29,11 @@ public class Folder {
     private Long parentId;
 
     @Column(nullable = false)
-    private Timestamp createdAt;
+    @CreatedDate
+    private Date createdAt;
 
     @Column(nullable = false)
-    private Timestamp updatedAt;
+    @LastModifiedDate
+    private Date updatedAt;
 
 }
