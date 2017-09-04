@@ -7,8 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by songc on 4/27/2017.
