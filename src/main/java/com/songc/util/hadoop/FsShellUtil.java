@@ -14,7 +14,7 @@ import java.net.URI;
 public class FsShellUtil {
     private FileSystem fileSystem;
     public FsShellUtil() throws IOException {
-        String PATH = "hdfs://master:54310";
+        String PATH = "hdfs://10.2.205.228:54310";
         Configuration configuration = new Configuration();
         this.fileSystem = FileSystem.get(URI.create(PATH), configuration);
     }

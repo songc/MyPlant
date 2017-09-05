@@ -44,7 +44,6 @@ public class MultipartFileServiceImp implements MultipartFileService{
                 fsShellUtil.writer(multipartFile.getOriginalFilename(), bytes);
             } catch (IOException e) {
                 e.printStackTrace();
-                return "fail" + e.getMessage();
             }
             return fileService.save(file);
         }
@@ -63,9 +62,8 @@ public class MultipartFileServiceImp implements MultipartFileService{
                 file.setSize(multipartFile.getSize());
                 try {
                     byte[] bytes = multipartFile.getBytes();
-                    outputStream = new BufferedOutputStream(new FileOutputStream(new java.io.File(path+multipartFile.getOriginalFilename())));
-                    outputStream.write(bytes);
-                    outputStream.close();
+                    FsShellUtil fsShellUtil = new FsShellUtil();
+                    fsShellUtil.writer(multipartFile.getOriginalFilename(), bytes);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return "fail " + e.getMessage();
