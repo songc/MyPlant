@@ -2,14 +2,12 @@ package com.songc.util;
 
 import com.songc.dao.HbaseFileDao;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +22,10 @@ public class HbaseFileUtil{
 
     private HBaseAdmin admin;
 
-    public void initialize() throws IOException {
+    @Bean
+    public HbaseTemplate initialize() throws IOException {
         configuration = HBaseConfiguration.create();
+        configuration.set("hbase.roodir","hdfs://master:54310/hbase");
         configuration.set("hbase.zookeeper.quorum","master");
         configuration.set("hbase.zookeeper.property.clientPort", "2181");
         admin = new HBaseAdmin(configuration);
@@ -41,6 +41,7 @@ public class HbaseFileUtil{
         HColumnDescriptor columnDescriptor = new HColumnDescriptor(HbaseFileDao.HF_INFO);
         tableDescriptor.addFamily(columnDescriptor);
         admin.createTable(tableDescriptor);
+        return new HbaseTemplate(configuration);
     }
 
 }

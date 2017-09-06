@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.data.hadoop.hbase.RowMapper;
 import org.springframework.data.hadoop.hbase.TableCallback;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Component
 public class HbaseFileDao {
 
-    private HbaseTemplate hbaseTemplate = new HbaseTemplate();
+    @Autowired
+    private HbaseTemplate hbaseTemplate;
     private String tableName = "hfile";
     public static byte[] HF_INFO = Bytes.toBytes("hfInfo");
 
@@ -39,8 +41,9 @@ public class HbaseFileDao {
             @Override
             public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
                 HbaseFile hbaseFile = new HbaseFile(parentId,name, content);
-                String rowKey = String.format("%016", parentId) + String.format("%016", HbaseFile.HF_ID);
+                String rowKey = String.format("%016d", parentId) + String.format("%016d", HbaseFile.HF_ID);
                 Put p = new Put(Bytes.toBytes(rowKey));
+                p.add(HF_INFO, qParentId, Bytes.toBytes(parentId));
                 p.add(HF_INFO, qName, Bytes.toBytes(name));
                 p.add(HF_INFO, qContent, content);
                 hTableInterface.put(p);
