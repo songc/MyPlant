@@ -1,8 +1,7 @@
 package com.songc.service.imp;
 
-import com.songc.dao.HbaseFileDao;
+import com.songc.dao.imp.HbaseDao;
 import com.songc.entity.HbaseFile;
-import com.songc.util.HbaseFileUtil;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +17,12 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class HbaseServiceImpTest {
 
-    @Autowired
-    private HbaseFileUtil hbaseFileUtil;
 
     @Autowired
-    private HbaseFileDao hbaseFileDao;
+    private HbaseDao hbaseFileDao;
 
     @Test
     public void addHbaseFile() throws Exception {
-        hbaseFileUtil.initialize();
         HbaseFile hbaseFile = hbaseFileDao.save(100L, "songc", Bytes.toBytes("12345678979"));
         assertNotNull(hbaseFile);
         assertEquals(hbaseFile.getName(),"songc");
@@ -34,9 +30,7 @@ public class HbaseServiceImpTest {
 
     @Test
     public void findAll() throws Exception {
-        hbaseFileUtil.initialize();
-        List<HbaseFile> hbaseFileList = hbaseFileDao.findAll();
-//        assertNull(hbaseFileList);
+        List<HbaseFile> hbaseFileList;
         HbaseFile hbaseFile = hbaseFileDao.save(100L, "songc", Bytes.toBytes("12345678979"));
         hbaseFileList = hbaseFileDao.findAll();
         assertNotNull(hbaseFileList);

@@ -6,7 +6,9 @@ import org.apache.hadoop.fs.Path;
 import java.util.List;
 
 public interface HbaseService{
-    HbaseFile addHbaseFile(Long parentId, String name, byte[] content);
+    HbaseFile add(Long parentId, String name, byte[] content);
 
-    List<HbaseFile> findAll();
+    HbaseFile find(String rowName);
+
+    String delete(String rowName);
 }

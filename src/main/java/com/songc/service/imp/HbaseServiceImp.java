@@ -1,6 +1,6 @@
 package com.songc.service.imp;
 
-import com.songc.dao.HbaseFileDao;
+import com.songc.dao.imp.HbaseDao;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +12,22 @@ import java.util.List;
 public class HbaseServiceImp implements HbaseService {
 
     @Autowired
-    private HbaseFileDao hbaseFileDao;
+    private HbaseDao hbaseDao;
 
     @Override
-    public HbaseFile addHbaseFile(Long parentId, String name, byte[] content) {
-        return hbaseFileDao.save(parentId, name, content);
+    public HbaseFile add(Long parentId, String name, byte[] content) {
+        return hbaseDao.save(parentId, name, content);
     }
 
     @Override
-    public List<HbaseFile> findAll() {
-        return hbaseFileDao.findAll();
+    public HbaseFile find(String rowName) {
+        return hbaseDao.find(rowName);
     }
+
+    @Override
+    public String delete(String rowName) {
+        hbaseDao.delete(rowName);
+        return "SUCCESS";
+    }
+
 }
