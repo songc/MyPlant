@@ -1,26 +1,30 @@
 package com.songc.service.imp;
 
 import com.songc.dao.FolderDao;
-import com.songc.entity.File;
 import com.songc.entity.Folder;
+import com.songc.entity.HbaseFile;
 import com.songc.service.FolderService;
+import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Service
 public class FolderServiceImp implements FolderService {
-    @Autowired
+
     private FolderDao folderDao;
+    private HbaseService hbaseService;
+
+    @Autowired
+    public FolderServiceImp(FolderDao folderDao, HbaseService hbaseService) {
+        this.folderDao = folderDao;
+        this.hbaseService = hbaseService;
+    }
 
     @Override
-    public Long save(Folder folder) {
-//        folder.setCreatedAt(Timestamp.from(Instant.now()));
-//        folder.setUpdatedAt(Timestamp.from(Instant.now()));
-        return folderDao.save(folder).getFolderId();
+    public Folder save(Folder folder) {
+        return folderDao.save(folder);
     }
 
     @Override
@@ -29,12 +33,12 @@ public class FolderServiceImp implements FolderService {
     }
 
     @Override
-    public List<Folder> findAllSubfolder(Long parentId) {
+    public List<Folder> findSubFolder(Long parentId) {
         return folderDao.findAllByParentId(parentId);
     }
 
     @Override
-    public Long createSubfolder(String name, Long parentId) {
+    public Folder save(String name, Long parentId) {
         Folder folder = new Folder();
         folder.setName(name);
         folder.setParentId(parentId);
@@ -42,7 +46,27 @@ public class FolderServiceImp implements FolderService {
     }
 
     @Override
-    public List<File> findAllSubFile(Long parentId) {
+    public List<HbaseFile> findSubFile(Long parentId) {
         return null;
+    }
+
+    @Override
+    public void delete(Long id) {
+        deleteChidren(id);
+        folderDao.delete(id);
+    }
+
+    /**
+     * recursive delete sub folder
+     *
+     * @param id parentId
+     */
+    private void deleteChidren(Long id) {
+        List<Folder> folders = folderDao.findAllByParentId(id);
+        hbaseService.deleteByParentId(id);
+        for (Folder folder : folders) {
+            deleteChidren(folder.getFolderId());
+        }
+        folderDao.delete(folders);
     }
 }

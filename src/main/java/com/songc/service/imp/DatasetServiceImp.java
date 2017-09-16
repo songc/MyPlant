@@ -3,7 +3,6 @@ package com.songc.service.imp;
 import com.songc.dao.DatasetDao;
 import com.songc.entity.Dataset;
 import com.songc.entity.Folder;
-import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
 import com.songc.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -39,7 +36,7 @@ public class DatasetServiceImp implements DatasetService {
         Folder folder = new Folder();
         folder.setName(dataset.getName());
         folder.setParentId(DEFAULT_Parent_ID);
-        Long folderId = folderService.save(folder);
+        Long folderId = folderService.save(folder).getFolderId();
 
         dataset.setFolderId(folderId);
         return datasetDao.save(dataset);

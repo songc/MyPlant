@@ -1,77 +1,63 @@
 package com.songc.service.imp;
 
-import com.songc.entity.File;
-import com.songc.service.FileService;
+import com.songc.entity.HbaseFile;
+import com.songc.service.HbaseService;
 import com.songc.service.MultipartFileService;
-import com.songc.util.hadoop.FsShellUtil;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class MultipartFileServiceImp implements MultipartFileService{
 
-    private FileService fileService;
+    private HbaseService hbaseService;
 
     @Value("${web.upload-path}")
     private String path;
 
     @Autowired
-    public MultipartFileServiceImp(FileService fileService) {
-        this.fileService = fileService;
+    public MultipartFileServiceImp(HbaseService hbaseService) {
+        this.hbaseService = hbaseService;
     }
 
     @Override
-    public String save(MultipartFile multipartFile) {
+    public HbaseFile save(Long parentId, MultipartFile multipartFile) {
         if (!multipartFile.isEmpty()) {
-            File file = new File();
+            HbaseFile file = new HbaseFile();
             file.setName(multipartFile.getOriginalFilename());
-            file.setSize(multipartFile.getSize());
+            file.setParentId(parentId);
             try {
-                byte[] bytes = multipartFile.getBytes();
-                FsShellUtil fsShellUtil = new FsShellUtil();
-                fsShellUtil.writer(multipartFile.getOriginalFilename(), bytes);
+                file.setContent(multipartFile.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return fileService.save(file);
+            hbaseService.save(file.getParentId(), file.getName(), file.getContent());
         }
-        return "fail, the file is empty" ;
+        return null;
     }
 
     @Override
-    public String save(List<MultipartFile> multipartFiles) {
-
-        BufferedOutputStream outputStream;
-        List<File> files = new ArrayList<>();
+    public HbaseFile save(Long parentId, List<MultipartFile> multipartFiles) {
+        List<HbaseFile> files = new ArrayList<>();
         for (MultipartFile multipartFile: multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                File file = new File();
+                HbaseFile file = new HbaseFile();
                 file.setName(multipartFile.getOriginalFilename());
-                file.setSize(multipartFile.getSize());
+                file.setParentId(parentId);
                 try {
-                    byte[] bytes = multipartFile.getBytes();
-                    FsShellUtil fsShellUtil = new FsShellUtil();
-                    fsShellUtil.writer(multipartFile.getOriginalFilename(), bytes);
+                    file.setContent(multipartFile.getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return "fail " + e.getMessage();
                 }
                 files.add(file);
             }
         }
-        return fileService.save(files);
+        hbaseService.save(files);
+        return null;
     }
-
 }
