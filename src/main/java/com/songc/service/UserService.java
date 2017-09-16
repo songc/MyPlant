@@ -7,7 +7,7 @@ import com.songc.entity.User;
  */
 public interface UserService {
 
-    Long addUser(User user);
+    User save(User user);
 
     User findUser(Long id);
 

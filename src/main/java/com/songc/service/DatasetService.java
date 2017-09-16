@@ -10,7 +10,12 @@ import java.util.List;
  */
 public interface DatasetService {
 
-    Long save(Dataset dataset);
+    Dataset save(Dataset dataset);
 
     Page<Dataset> getPageDataset(Integer page, Integer size);
+
+    List<Dataset> findByUserId(Long userId);
+
+    String delete(Long id);
+
 }

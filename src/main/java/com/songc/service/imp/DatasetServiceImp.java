@@ -13,11 +13,12 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class DatasetServiceImp implements DatasetService {
 
-    public static final Long  DEFAULT_Parent_ID = (long)0;
+    private static final Long  DEFAULT_Parent_ID = (long)0;
 
     private DatasetDao datasetDao;
 
@@ -32,7 +33,7 @@ public class DatasetServiceImp implements DatasetService {
 
 
     @Override
-    public Long save(Dataset dataset) {
+    public Dataset save(Dataset dataset) {
 
         Folder folder = new Folder();
         folder.setName(dataset.getName());
@@ -40,12 +41,22 @@ public class DatasetServiceImp implements DatasetService {
         Long folderId = folderService.save(folder);
 
         dataset.setFolderId(folderId);
-        return datasetDao.save(dataset).getDatasetId();
+        return datasetDao.save(dataset);
     }
 
     @Override
     public Page<Dataset> getPageDataset(Integer page, Integer size) {
         Pageable pageable = new PageRequest(page, size);
         return datasetDao.findAll(pageable);
+    }
+
+    @Override
+    public List<Dataset> findByUserId(Long userId) {
+        return null;
+    }
+
+    @Override
+    public String delete(Long id) {
+        return null;
     }
 }

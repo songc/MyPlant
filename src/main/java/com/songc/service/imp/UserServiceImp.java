@@ -22,9 +22,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Long addUser(User user) {
-        User user1=userDao.save(user);
-        return user1.getUserId();
+    public User save(User user) {
+        return userDao.save(user);
     }
 
     @Override
@@ -34,7 +33,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserByUsernameAndPassword(String username, String password) {
-        User user = userDao.findUserByUsernameAndPassword(username, password);
-        return user;
+        return userDao.findUserByUsernameAndPassword(username, password);
     }
 }
