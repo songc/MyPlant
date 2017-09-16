@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping(value ="/{id}/dataset")
-    public Dataset save(@PathVariable("id") Long id, @RequestParam("dataset") Dataset dataset) {
+    public Dataset save(@PathVariable("id") Long id, @RequestBody Dataset dataset) {
         Assert.notNull(id, "userId can't be null");
         Assert.notNull(dataset,"dataset can't be null");
         dataset.setUserId(id);
