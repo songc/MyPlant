@@ -14,8 +14,10 @@ public interface DatasetService {
 
     Page<Dataset> getPageDataset(Integer page, Integer size);
 
+    Dataset findOne(Long id);
+
     List<Dataset> findByUserId(Long userId);
 
-    String delete(Long id);
+    void delete(Long id);
 
 }

@@ -41,4 +41,6 @@ public class Dataset{
     private Date updatedAt;
 
     private Long folderId;
+
+    private Long userId;
 }

@@ -3,6 +3,7 @@ package com.songc.service.imp;
 import com.songc.dao.DatasetDao;
 import com.songc.entity.Dataset;
 import com.songc.entity.Folder;
+import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
 import com.songc.service.FolderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,17 @@ public class DatasetServiceImp implements DatasetService {
     }
 
     @Override
-    public List<Dataset> findByUserId(Long userId) {
-        return null;
+    public Dataset findOne(Long id) {
+        return datasetDao.findOne(id);
     }
 
     @Override
-    public String delete(Long id) {
-        return null;
+    public List<Dataset> findByUserId(Long userId) {
+        return datasetDao.findByUserId(userId);
+    }
+
+    @Override
+    public void delete(Long id) {
+        datasetDao.delete(id);
     }
 }
