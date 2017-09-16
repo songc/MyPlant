@@ -11,11 +11,15 @@ import java.util.List;
 @Service
 public class HbaseServiceImp implements HbaseService {
 
-    @Autowired
     private HbaseDao hbaseDao;
 
+    @Autowired
+    public HbaseServiceImp(HbaseDao hbaseDao) {
+        this.hbaseDao = hbaseDao;
+    }
+
     @Override
-    public HbaseFile add(Long parentId, String name, byte[] content) {
+    public HbaseFile save(Long parentId, String name, byte[] content) {
         return hbaseDao.save(parentId, name, content);
     }
 
@@ -25,9 +29,18 @@ public class HbaseServiceImp implements HbaseService {
     }
 
     @Override
-    public String delete(String rowName) {
+    public void delete(String rowName) {
         hbaseDao.delete(rowName);
-        return "SUCCESS";
+    }
+
+    @Override
+    public void deleteByParentId(Long parentId) {
+
+    }
+
+    @Override
+    public void save(List<HbaseFile> files) {
+
     }
 
 }

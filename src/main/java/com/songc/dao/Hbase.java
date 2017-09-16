@@ -5,13 +5,15 @@ import com.songc.entity.HbaseFile;
 import java.util.List;
 
 public interface Hbase {
-    HbaseFile find(String rowName);
-
     HbaseFile save(Long parentId,String name,byte[] content);
+
+    List<HbaseFile> save(List<HbaseFile> hbaseFiles);
+
+    HbaseFile find(String rowName);
 
     List<HbaseFile> findAll();
 
-    void delete(String rowName);
-
     String update(String rowName, HbaseFile hbaseFile);
+
+    void delete(String rowName);
 }

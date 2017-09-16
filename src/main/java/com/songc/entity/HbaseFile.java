@@ -9,7 +9,11 @@ public class HbaseFile {
     private String name;
     private byte[] content;
 
-    public HbaseFile(Long parentId,String name, byte[] content) {
+    public HbaseFile() {
+        HbaseFile.HF_ID++;
+    }
+
+    public HbaseFile(Long parentId, String name, byte[] content) {
         this.parentId = parentId;
         this.name = name;
         this.content = content;
