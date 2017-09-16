@@ -36,13 +36,13 @@ public class MultipartFileServiceImp implements MultipartFileService{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            hbaseService.save(file.getParentId(), file.getName(), file.getContent());
+            return hbaseService.save(file.getParentId(), file.getName(), file.getContent());
         }
         return null;
     }
 
     @Override
-    public HbaseFile save(Long parentId, List<MultipartFile> multipartFiles) {
+    public List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles) {
         List<HbaseFile> files = new ArrayList<>();
         for (MultipartFile multipartFile: multipartFiles) {
             if (!multipartFile.isEmpty()) {
@@ -58,6 +58,6 @@ public class MultipartFileServiceImp implements MultipartFileService{
             }
         }
         hbaseService.save(files);
-        return null;
+        return files;
     }
 }

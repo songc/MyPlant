@@ -11,7 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,6 +35,7 @@ public class HbaseServiceImpTest {
         HbaseFile hbaseFile = hbaseFileDao.save(100L, "songc", Bytes.toBytes("12345678979"));
         hbaseFileList = hbaseFileDao.findAll();
         assertNotNull(hbaseFileList);
+        System.out.println(hbaseFileList.get(0).getName());
     }
 
 }

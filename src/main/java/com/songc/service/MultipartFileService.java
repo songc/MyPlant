@@ -8,5 +8,5 @@ import java.util.List;
 public interface MultipartFileService {
     HbaseFile save(Long parentId, MultipartFile multipartFile);
 
-    HbaseFile save(Long parentId, List<MultipartFile> multipartFiles);
+    List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles);
 }

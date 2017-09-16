@@ -24,6 +24,11 @@ public class FolderController {
         this.multipartFileService = multipartFileService;
     }
 
+    @PostMapping(value = "/{id}/subfolder")
+    public Folder save(@RequestParam("name") String name, @PathVariable("id") Long parentId) {
+        return folderService.save(name, parentId);
+    }
+
     @GetMapping(value = "/{id}")
     public Folder find(@PathVariable("id") Long id) {
         return folderService.find(id);
@@ -35,30 +40,23 @@ public class FolderController {
         return StatusEnum.SUCCESS.toString();
     }
 
-    @PostMapping(value = "/{id}/subfolder")
-    public Folder save(@RequestParam("name") String name, @PathVariable("id") Long parentId) {
-        return folderService.save(name, parentId);
-    }
-
     @GetMapping(value = "/{id}/subfolder")
-    public List<Folder> findSubFolder(@PathVariable Long parentId) {
+    public List<Folder> findSubFolder(@PathVariable("id") Long parentId) {
         return folderService.findSubFolder(parentId);
     }
 
     @PostMapping(value = "/{id}/singlefile")
     public HbaseFile save(@PathVariable("id") Long parentId, @RequestParam("file") MultipartFile multipartFile) {
-        multipartFileService.save(parentId, multipartFile);
-        return null;
+        return multipartFileService.save(parentId, multipartFile);
     }
 
     @PostMapping(value = "/{id}/mulfile")
-    public HbaseFile save(@PathVariable("id") Long parentId, @RequestParam("files") List<MultipartFile> multipartFiles) {
-        multipartFileService.save(parentId, multipartFiles);
-        return null;
+    public List<HbaseFile> save(@PathVariable("id") Long parentId, @RequestParam("files") List<MultipartFile> multipartFiles) {
+        return multipartFileService.save(parentId, multipartFiles);
     }
 
     @GetMapping(value = "/{id}/subfile")
-    public List<HbaseFile> findSubFile(@PathVariable Long parentId) {
+    public List<HbaseFile> findSubFile(@PathVariable("id") Long parentId) {
         return folderService.findSubFile(parentId);
     }
 }
