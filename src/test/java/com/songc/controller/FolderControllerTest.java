@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-//@WebMvcTest(FolderController.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class FolderControllerTest {
@@ -87,9 +86,7 @@ public class FolderControllerTest {
 
     @Test
     public void saveFiles() throws Exception {
-        List<MultipartFile> files = new ArrayList<>();
         MockMultipartFile file = new MockMultipartFile("songc", "content".getBytes());
-        files.add(file);
         List<HbaseFile> hbaseFiles = new ArrayList<>();
         hbaseFiles.add(new HbaseFile());
         given(multipartFileService.save(any(Long.TYPE), any(List.class))).willReturn(hbaseFiles);

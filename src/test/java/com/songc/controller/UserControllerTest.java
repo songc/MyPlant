@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @RunWith(SpringRunner.class)
-//@WebMvcTest(UserController.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {

@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @RunWith(SpringRunner.class)
-//@WebMvcTest(DatasetController.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DatasetControllerTest {
@@ -59,7 +58,7 @@ public class DatasetControllerTest {
         Integer size = 10;
         Pageable pageable = new PageRequest(page, size);
         List<Dataset> datasets = new ArrayList<>();
-        Page<Dataset> datasetPage = new PageImpl<Dataset>(datasets, pageable,10);
+        Page<Dataset> datasetPage = new PageImpl<>(datasets, pageable, 10);
         given(this.datasetService.getPageDataset(page, size)).willReturn(datasetPage);
         this.mockMvc.perform(get("/dataset").param("page",page.toString())
                 .param("size", size.toString())).andExpect(content().string(mapper.writeValueAsString(datasetPage)));
