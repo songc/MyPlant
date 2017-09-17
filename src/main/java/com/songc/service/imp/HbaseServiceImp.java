@@ -19,13 +19,18 @@ public class HbaseServiceImp implements HbaseService {
     }
 
     @Override
-    public HbaseFile save(Long parentId, String name, byte[] content) {
-        return hbaseDao.save(parentId, name, content);
+    public HbaseFile save(HbaseFile hbaseFile) {
+        return hbaseDao.save(hbaseFile);
     }
 
     @Override
     public HbaseFile find(String rowName) {
         return hbaseDao.find(rowName);
+    }
+
+    @Override
+    public List<HbaseFile> findByParentId(Long parentId) {
+        return hbaseDao.findByParentId(parentId);
     }
 
     @Override
@@ -35,12 +40,12 @@ public class HbaseServiceImp implements HbaseService {
 
     @Override
     public void deleteByParentId(Long parentId) {
-
+        hbaseDao.deleteByParentId(parentId);
     }
 
     @Override
-    public void save(List<HbaseFile> files) {
-
+    public List<HbaseFile> save(List<HbaseFile> files) {
+        return hbaseDao.save(files);
     }
 
 }

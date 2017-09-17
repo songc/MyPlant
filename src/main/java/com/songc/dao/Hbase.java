@@ -5,7 +5,7 @@ import com.songc.entity.HbaseFile;
 import java.util.List;
 
 public interface Hbase {
-    HbaseFile save(Long parentId,String name,byte[] content);
+    HbaseFile save(HbaseFile hbaseFile);
 
     List<HbaseFile> save(List<HbaseFile> hbaseFiles);
 
@@ -13,7 +13,11 @@ public interface Hbase {
 
     List<HbaseFile> findAll();
 
-    String update(String rowName, HbaseFile hbaseFile);
+    List<HbaseFile> findByParentId(Long parentId);
 
     void delete(String rowName);
+
+    void deleteByParentId(Long parentId);
+
+    String update(String rowName, HbaseFile hbaseFile);
 }

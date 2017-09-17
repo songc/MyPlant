@@ -47,7 +47,7 @@ public class FolderServiceImp implements FolderService {
 
     @Override
     public List<HbaseFile> findSubFile(Long parentId) {
-        return null;
+        return hbaseService.findByParentId(parentId);
     }
 
     @Override
