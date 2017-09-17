@@ -15,9 +15,10 @@ public interface Hbase {
 
     List<HbaseFile> findByParentId(Long parentId);
 
+    List<byte[]> getRowKeysByParentId(Long parentId);
+
     void delete(String rowName);
 
     void deleteByParentId(Long parentId);
 
-    String update(String rowName, HbaseFile hbaseFile);
 }

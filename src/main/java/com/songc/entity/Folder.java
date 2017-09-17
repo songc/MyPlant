@@ -33,4 +33,12 @@ public class Folder {
     @LastModifiedDate
     private Date updatedAt;
 
+    public Folder() {
+    }
+
+    public Folder(String name, Long parentId) {
+
+        this.name = name;
+        this.parentId = parentId;
+    }
 }

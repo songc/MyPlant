@@ -20,6 +20,18 @@ public class User {
     @GeneratedValue
     private Long userId;
 
+    public User() {
+    }
+
+    public User(String username, String password, String email, Sex sex, String address) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.sex = sex;
+        this.address = address;
+    }
+
     @Column(nullable = false, unique = true)
     private String username;
 

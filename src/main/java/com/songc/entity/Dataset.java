@@ -43,4 +43,17 @@ public class Dataset{
     private Long folderId;
 
     private Long userId;
+
+    public Dataset(String name, String author, State state, String description, Long folderId, Long userId) {
+        this.name = name;
+        this.author = author;
+        this.state = state;
+        this.description = description;
+        this.folderId = folderId;
+        this.userId = userId;
+    }
+
+    public Dataset() {
+
+    }
 }
