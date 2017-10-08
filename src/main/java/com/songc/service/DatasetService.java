@@ -1,6 +1,7 @@
 package com.songc.service;
 
 import com.songc.entity.Dataset;
+import com.songc.entity.HbaseFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface DatasetService {
     List<Dataset> findByUserId(Long userId);
 
     void delete(Long id);
+
+    List<HbaseFile> findFile(Long parentId);
 
 }

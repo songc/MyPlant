@@ -40,8 +40,6 @@ public class Dataset{
     @LastModifiedDate
     private Date updatedAt;
 
-    private Long folderId;
-
     private Long userId;
 
     public Dataset(String name, String author, State state, String description, Long folderId, Long userId) {
@@ -49,7 +47,6 @@ public class Dataset{
         this.author = author;
         this.state = state;
         this.description = description;
-        this.folderId = folderId;
         this.userId = userId;
     }
 

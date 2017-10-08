@@ -2,8 +2,10 @@ package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.songc.entity.Dataset;
+import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
+import com.songc.service.MultipartFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,9 +27,9 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,6 +42,9 @@ public class DatasetControllerTest {
 
     @MockBean
     private DatasetService datasetService;
+
+    @MockBean
+    private MultipartFileService multipartFileService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -77,5 +83,24 @@ public class DatasetControllerTest {
     public void delete() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/dataset/1"))
                 .andExpect(content().string(StatusEnum.SUCCESS.toString()));
+    }
+
+    @Test
+    public void save1() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("songc", "content".getBytes());
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        hbaseFiles.add(new HbaseFile());
+        given(multipartFileService.save(any(Long.TYPE), any(List.class))).willReturn(hbaseFiles);
+        mockMvc.perform(fileUpload("/dataset/1/file").file(file).file(file))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(hbaseFiles)));
+    }
+
+    @Test
+    public void findFile() throws Exception {
+        List<HbaseFile> files = new ArrayList<>();
+        given(datasetService.findFile(any(Long.TYPE))).willReturn(files);
+        this.mockMvc.perform(get("/dataset/1/file"))
+                .andExpect(content().string(mapper.writeValueAsString(files)));
     }
 }

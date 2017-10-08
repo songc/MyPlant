@@ -2,9 +2,9 @@ package com.songc.service.imp;
 
 import com.songc.dao.DatasetDao;
 import com.songc.entity.Dataset;
-import com.songc.entity.Folder;
+import com.songc.entity.HbaseFile;
 import com.songc.service.DatasetService;
-import com.songc.service.FolderService;
+import com.songc.service.HbaseService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,7 +31,7 @@ public class DatasetServiceImpTest {
     private DatasetDao datasetDao;
 
     @MockBean
-    private FolderService folderService;
+    private HbaseService hbaseService;
 
     @Autowired
     private DatasetService datasetService;
@@ -40,15 +40,10 @@ public class DatasetServiceImpTest {
     public void save() throws Exception {
         Dataset dataset = new Dataset();
         dataset.setUserId(1L);
-        Folder folder = mock(Folder.class);
-        given(folderService.save(any(Folder.class))).willReturn(folder);
-        when(folder.getFolderId()).thenReturn(2L);
 
         given(datasetDao.save(dataset)).willReturn(dataset);
         Dataset dataset1 = datasetService.save(dataset);
 
-        verify(folderService).save(any(Folder.class));
-        verify(folder).getFolderId();
         assertEquals(dataset.getUserId(), dataset1.getUserId());
     }
 
@@ -86,6 +81,16 @@ public class DatasetServiceImpTest {
         Long id = 100L;
         datasetService.delete(id);
         verify(datasetDao).delete(id);
+    }
+
+
+    public void findFile() {
+        Long id = 100L;
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        hbaseFiles.add(new HbaseFile());
+        given(hbaseService.findByParentId(id)).willReturn(hbaseFiles);
+        List<HbaseFile> hbaseFiles1 = datasetService.findFile(id);
+        assertEquals(hbaseFiles.size(), hbaseFiles1.size());
     }
 
 }
