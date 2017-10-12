@@ -1,6 +1,7 @@
 package com.songc.controller;
 
 
+import com.songc.dto.UserDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.User;
 import com.songc.service.DatasetService;
@@ -27,21 +28,21 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@RequestBody User user) {
-        return userService.save(user);
+    public UserDTO save(@RequestBody User user) {
+        return new UserDTO(userService.save(user));
     }
 
     @GetMapping(value = "/{id}")
-    public User findUser(@PathVariable("id") Long id) {
+    public UserDTO findUser(@PathVariable("id") Long id) {
         Assert.notNull(id,"userId can't be null");
-        return userService.findUser(id);
+        return new UserDTO(userService.findUser(id));
     }
 
     @PostMapping(value = "/login")
-    public User login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public UserDTO login(@RequestParam("username") String username, @RequestParam("password") String password) {
         Assert.notNull(username, "username can't be null");
         Assert.notNull(password, "password can't be null");
-        return userService.findUserByUsernameAndPassword(username, password);
+        return new UserDTO(userService.findUserByUsernameAndPassword(username, password));
     }
 
     @GetMapping(value = "/{id}/dataset")

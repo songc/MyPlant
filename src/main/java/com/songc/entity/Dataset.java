@@ -42,7 +42,7 @@ public class Dataset{
 
     private Long userId;
 
-    public Dataset(String name, String author, State state, String description, Long folderId, Long userId) {
+    public Dataset(String name, String author, State state, String description, Long userId) {
         this.name = name;
         this.author = author;
         this.state = state;

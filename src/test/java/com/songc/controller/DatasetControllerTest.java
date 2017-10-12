@@ -6,6 +6,7 @@ import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
 import com.songc.service.MultipartFileService;
+import com.songc.util.MapperUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +94,7 @@ public class DatasetControllerTest {
         given(multipartFileService.save(any(Long.TYPE), any(List.class))).willReturn(hbaseFiles);
         mockMvc.perform(fileUpload("/dataset/1/file").file(file).file(file))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(hbaseFiles)));
+                .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(hbaseFiles))));
     }
 
     @Test
@@ -101,6 +102,6 @@ public class DatasetControllerTest {
         List<HbaseFile> files = new ArrayList<>();
         given(datasetService.findFile(any(Long.TYPE))).willReturn(files);
         this.mockMvc.perform(get("/dataset/1/file"))
-                .andExpect(content().string(mapper.writeValueAsString(files)));
+                .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(files))));
     }
 }

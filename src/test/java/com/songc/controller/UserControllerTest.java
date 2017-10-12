@@ -1,6 +1,7 @@
 package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.songc.dto.UserDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.User;
 import com.songc.service.DatasetService;
@@ -50,7 +51,7 @@ public class UserControllerTest {
         this.mockMvc.perform(post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(user)))
-                .andExpect(content().string(mapper.writeValueAsString(user)));
+                .andExpect(content().string(mapper.writeValueAsString(new UserDTO(user))));
     }
 
     @Test
@@ -63,7 +64,7 @@ public class UserControllerTest {
         user.setEmail("44350255@qq.com");
         given(this.userService.findUser(any(Long.TYPE))).willReturn(user);
         this.mockMvc.perform(get("/user/1"))
-                .andExpect(content().string(mapper.writeValueAsString(user)));
+                .andExpect(content().string(mapper.writeValueAsString(new UserDTO(user))));
     }
 
     @Test
@@ -76,7 +77,7 @@ public class UserControllerTest {
         given(this.userService.findUserByUsernameAndPassword("songc","443502355")).willReturn(user);
         this.mockMvc.perform(post("/user/login").param("username", "songc")
                 .param("password", "443502355"))
-                .andExpect(content().string(mapper.writeValueAsString(user)));
+                .andExpect(content().string(mapper.writeValueAsString(new UserDTO(user))));
     }
 
     @Test

@@ -22,7 +22,7 @@ public class DatasetDaoTest {
     @Test
     public void findByUserId() throws Exception {
         Long id = 100L;
-        Dataset dataset = new Dataset("Test", "songc", State.open, "songc", id, id);
+        Dataset dataset = new Dataset("Test", "songc", State.open, "songc", id);
         datasetDao.save(dataset);
         List<Dataset> datasets = datasetDao.findByUserId(id);
         assertEquals(1, datasets.size());

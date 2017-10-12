@@ -1,10 +1,12 @@
 package com.songc.controller;
 
+import com.songc.dto.HbaseFileDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
 import com.songc.service.MultipartFileService;
+import com.songc.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/dataset")
 public class DatasetController {
+
 
     private DatasetService datasetService;
     private MultipartFileService multipartFileService;
@@ -49,12 +52,13 @@ public class DatasetController {
     }
 
     @PostMapping(value = "/{id}/file")
-    public List<HbaseFile> save(@PathVariable("id") Long parentId, @RequestParam("files") List<MultipartFile> multipartFiles) {
-        return multipartFileService.save(parentId, multipartFiles);
+    public List<HbaseFileDTO> save(@PathVariable("id") Long parentId, @RequestParam("files") List<MultipartFile> multipartFiles) {
+        List<HbaseFile> hbaseFileList = multipartFileService.save(parentId, multipartFiles);
+        return MapperUtil.convert(hbaseFileList);
     }
 
     @GetMapping(value = "/{id}/file")
-    public List<HbaseFile> findFile(@PathVariable("id") Long parentId) {
-        return datasetService.findFile(parentId);
+    public List<HbaseFileDTO> findFile(@PathVariable("id") Long parentId) {
+        return MapperUtil.convert(datasetService.findFile(parentId));
     }
 }

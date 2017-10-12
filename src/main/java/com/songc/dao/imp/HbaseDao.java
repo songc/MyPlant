@@ -62,6 +62,7 @@ public class HbaseDao implements Hbase {
                 List<Put> puts = new ArrayList<>();
                 for (HbaseFile hbaseFile : hbaseFiles) {
                     String rowKey = HbaseUtil.ConvertRowKey(hbaseFile.getParentId());
+                    hbaseFile.setRowKey(rowKey);
                     Put p = new Put(Bytes.toBytes(rowKey));
                     p.add(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
                     p.add(family.getBytes(), qName, hbaseFile.getName().getBytes());
@@ -80,7 +81,7 @@ public class HbaseDao implements Hbase {
         return hbaseTemplate.get(tableName, rowName, new RowMapper<HbaseFile>() {
             @Override
             public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(Bytes.toLong(result.getValue(family.getBytes(), qParentId)),
+                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId)),
                         Bytes.toString(result.getValue(family.getBytes(), qName)),
                         result.getValue(family.getBytes(), qContent));
             }
@@ -92,7 +93,7 @@ public class HbaseDao implements Hbase {
         return hbaseTemplate.find(tableName,family, new RowMapper<HbaseFile>() {
             @Override
             public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(Bytes.toLong(result.getValue(family.getBytes(), qParentId))
+                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId))
                         , Bytes.toString(result.getValue(family.getBytes(), qName)), result.getValue(family.getBytes(), qContent));
             }
         });
@@ -106,7 +107,7 @@ public class HbaseDao implements Hbase {
         return hbaseTemplate.find(tableName, scan, new RowMapper<HbaseFile>() {
             @Override
             public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(Bytes.toLong(result.getValue(family.getBytes(), qParentId))
+                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId))
                         , Bytes.toString(result.getValue(family.getBytes(), qName))
                         , result.getValue(family.getBytes(), qContent));
             }
