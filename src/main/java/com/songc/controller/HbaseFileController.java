@@ -1,6 +1,6 @@
 package com.songc.controller;
 
-import com.songc.entity.HbaseFile;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ public class HbaseFileController {
     }
 
     @GetMapping(value = "/{rowkey}")
-    public HbaseFile find(@PathVariable("rowkey") String rowKey) {
-        return hbaseService.find(rowKey);
+    public HbaseFileWithContentDTO find(@PathVariable("rowkey") String rowKey) {
+        return new HbaseFileWithContentDTO(hbaseService.find(rowKey));
     }
 
     @DeleteMapping(value = "/{rowkey}")
