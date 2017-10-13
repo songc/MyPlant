@@ -1,6 +1,7 @@
 package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.HbaseService;
@@ -34,11 +35,11 @@ public class HbaseFileControllerTest {
 
     @Test
     public void find() throws Exception {
-        HbaseFile hbaseFile = new HbaseFile();
+        HbaseFile hbaseFile = new HbaseFile("123456", 100L, "23.csv", "wrefds".getBytes());
         given(hbaseService.find("123456")).willReturn(hbaseFile);
         mockMvc.perform(get("/hbase/123456"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(hbaseFile)));
+                .andExpect(content().string(mapper.writeValueAsString(new HbaseFileWithContentDTO(hbaseFile))));
     }
 
     @Test

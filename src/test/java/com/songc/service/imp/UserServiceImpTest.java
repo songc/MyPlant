@@ -26,20 +26,20 @@ public class UserServiceImpTest {
     @Test
     public void save() throws Exception {
         User user = new User();
-        user.setUserId(1L);
+        user.setId(1L);
         given(userDao.save(user)).willReturn(user);
         User user1 = userService.save(user);
-        assertEquals(1L, (long) user1.getUserId());
+        assertEquals(1L, (long) user1.getId());
     }
 
     @Test
     public void findUser() throws Exception {
         User user = new User();
         Long id = 100L;
-        user.setUserId(id);
+        user.setId(id);
         given(userDao.findOne(id)).willReturn(user);
         User user1 = userService.findUser(id);
-        assertEquals(id, user1.getUserId());
+        assertEquals(id, user1.getId());
     }
 
     @Test

@@ -18,19 +18,8 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue
-    private Long userId;
+    private Long id;
 
-    public User() {
-    }
-
-    public User(String username, String password, String email, Sex sex, String address) {
-
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.sex = sex;
-        this.address = address;
-    }
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -55,4 +44,15 @@ public class User {
     @LastModifiedDate
     private Date updatedAt;
 
+    public User() {
+    }
+
+    public User(String username, String password, String email, Sex sex, String address) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.sex = sex;
+        this.address = address;
+    }
 }

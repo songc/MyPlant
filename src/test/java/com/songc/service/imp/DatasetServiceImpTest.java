@@ -60,10 +60,10 @@ public class DatasetServiceImpTest {
     public void findOne() throws Exception {
         Long id = 100L;
         Dataset dataset = new Dataset();
-        dataset.setDatasetId(id);
+        dataset.setId(id);
         given(datasetDao.findOne(id)).willReturn(dataset);
         Dataset dataset1 = datasetService.findOne(id);
-        assertEquals(id, dataset1.getDatasetId());
+        assertEquals(id, dataset1.getId());
     }
 
     @Test

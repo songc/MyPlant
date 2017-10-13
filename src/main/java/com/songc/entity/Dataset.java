@@ -18,7 +18,7 @@ import java.util.Date;
 public class Dataset{
     @Id
     @GeneratedValue
-    private Long datasetId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

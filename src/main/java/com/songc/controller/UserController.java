@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping(value = "/{id}")
     public UserDTO findUser(@PathVariable("id") Long id) {
-        Assert.notNull(id,"userId can't be null");
+        Assert.notNull(id, "id can't be null");
         return new UserDTO(userService.findUser(id));
     }
 
@@ -47,13 +47,13 @@ public class UserController {
 
     @GetMapping(value = "/{id}/dataset")
     public List<Dataset> findDataset(@PathVariable("id") Long id) {
-        Assert.notNull(id, "userId can't be null");
+        Assert.notNull(id, "id can't be null");
         return datasetService.findByUserId(id);
     }
 
     @PostMapping(value ="/{id}/dataset")
     public Dataset save(@PathVariable("id") Long id, @RequestBody Dataset dataset) {
-        Assert.notNull(id, "userId can't be null");
+        Assert.notNull(id, "id can't be null");
         Assert.notNull(dataset,"dataset can't be null");
         dataset.setUserId(id);
         return datasetService.save(dataset);
