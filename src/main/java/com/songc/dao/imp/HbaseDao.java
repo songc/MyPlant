@@ -43,7 +43,7 @@ public class HbaseDao implements Hbase {
         return hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
             @Override
             public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
-                String rowKey = HbaseUtil.ConvertRowKey(hbaseFile.getParentId());
+                String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
                 Put p = new Put(rowKey.getBytes());
                 p.add(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
                 p.add(family.getBytes(), qName, hbaseFile.getName().getBytes());
@@ -61,7 +61,7 @@ public class HbaseDao implements Hbase {
             public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
                 List<Put> puts = new ArrayList<>();
                 for (HbaseFile hbaseFile : hbaseFiles) {
-                    String rowKey = HbaseUtil.ConvertRowKey(hbaseFile.getParentId());
+                    String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
                     hbaseFile.setRowKey(rowKey);
                     Put p = new Put(Bytes.toBytes(rowKey));
                     p.add(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));

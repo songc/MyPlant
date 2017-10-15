@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class MultipartFileServiceImp implements MultipartFileService {
+public class MultipartFileServiceImpl implements MultipartFileService {
 
     private HbaseService hbaseService;
 
 
     @Autowired
-    public MultipartFileServiceImp(HbaseService hbaseService) {
+    public MultipartFileServiceImpl(HbaseService hbaseService) {
         this.hbaseService = hbaseService;
     }
 

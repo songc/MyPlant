@@ -14,14 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DatasetServiceImp implements DatasetService {
+public class DatasetServiceImpl implements DatasetService {
 
     private DatasetDao datasetDao;
 
     private HbaseService hbaseService;
 
     @Autowired
-    public DatasetServiceImp(DatasetDao datasetDao, HbaseService hbaseService) {
+    public DatasetServiceImpl(DatasetDao datasetDao, HbaseService hbaseService) {
         this.datasetDao = datasetDao;
         this.hbaseService = hbaseService;
     }

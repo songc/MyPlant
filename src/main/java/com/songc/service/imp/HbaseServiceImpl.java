@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class HbaseServiceImp implements HbaseService {
+public class HbaseServiceImpl implements HbaseService {
 
     private HbaseDao hbaseDao;
 
     @Autowired
-    public HbaseServiceImp(HbaseDao hbaseDao) {
+    public HbaseServiceImpl(HbaseDao hbaseDao) {
         this.hbaseDao = hbaseDao;
     }
 
