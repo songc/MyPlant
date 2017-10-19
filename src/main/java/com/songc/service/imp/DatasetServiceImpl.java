@@ -33,9 +33,15 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public Page<Dataset> getPageDataset(Integer page, Integer size) {
-        Pageable pageable = new PageRequest(page, size);
+    public Page<Dataset> getPageDataset(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = new PageRequest(pageNumber, pageSize);
         return datasetDao.findAll(pageable);
+    }
+
+    @Override
+    public Page<Dataset> getPageDatasetByUserId(Long userId, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = new PageRequest(pageNumber, pageSize);
+        return datasetDao.findByUserIdIs(userId, pageable);
     }
 
     @Override

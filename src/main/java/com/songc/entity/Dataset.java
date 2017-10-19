@@ -29,7 +29,7 @@ public class Dataset{
     @Column(nullable = false)
     private State state=State.open;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "varchar(500)")
     private String description;
 
     @Column(nullable = false)

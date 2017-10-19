@@ -7,10 +7,9 @@ import com.songc.entity.User;
 import com.songc.service.DatasetService;
 import com.songc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by songc on 4/27/2017.
@@ -46,9 +45,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}/dataset")
-    public List<Dataset> findDataset(@PathVariable("id") Long id) {
+    public Page<Dataset> findDataset(@PathVariable("id") Long id, @RequestParam("number") Integer pageNumber,
+                                     @RequestParam("size") Integer pageSize) {
         Assert.notNull(id, "id can't be null");
-        return datasetService.findByUserId(id);
+        return datasetService.getPageDatasetByUserId(id, pageNumber, pageSize);
     }
 
     @PostMapping(value ="/{id}/dataset")

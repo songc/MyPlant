@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -82,12 +86,15 @@ public class UserControllerTest {
 
     @Test
     public void findDataset() throws Exception {
+        Integer number = 1;
+        Integer size = 10;
+        Pageable pageable = new PageRequest(number, size);
         List<Dataset> datasets = new ArrayList<>();
-        datasets.add(new Dataset());
-        datasets.add(new Dataset());
-        given(this.datasetService.findByUserId(any(Long.TYPE))).willReturn(datasets);
-        this.mockMvc.perform(get("/user/1/dataset"))
-                .andExpect(content().string(mapper.writeValueAsString(datasets)));
+        Page<Dataset> datasetPage = new PageImpl<>(datasets, pageable, 10);
+        given(this.datasetService.getPageDatasetByUserId(anyLong(), anyInt(), anyInt())).willReturn(datasetPage);
+        this.mockMvc.perform(get("/user/1/dataset").param("number", number.toString())
+                .param("size", size.toString()))
+                .andExpect(content().string(mapper.writeValueAsString(datasetPage)));
     }
 
     @Test

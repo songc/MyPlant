@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,7 +68,7 @@ public class DatasetControllerTest {
         List<Dataset> datasets = new ArrayList<>();
         Page<Dataset> datasetPage = new PageImpl<>(datasets, pageable, 10);
         given(this.datasetService.getPageDataset(page, size)).willReturn(datasetPage);
-        this.mockMvc.perform(get("/dataset").param("page",page.toString())
+        this.mockMvc.perform(get("/dataset").param("number", page.toString())
                 .param("size", size.toString())).andExpect(content().string(mapper.writeValueAsString(datasetPage)));
     }
 
@@ -87,11 +88,12 @@ public class DatasetControllerTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void save1() throws Exception {
         MockMultipartFile file = new MockMultipartFile("songc", "content".getBytes());
         List<HbaseFile> hbaseFiles = new ArrayList<>();
         hbaseFiles.add(new HbaseFile());
-        given(multipartFileService.save(any(Long.TYPE), any(List.class))).willReturn(hbaseFiles);
+        given(multipartFileService.save(any(Long.TYPE), anyList())).willReturn(hbaseFiles);
         mockMvc.perform(fileUpload("/dataset/1/file").file(file).file(file))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(hbaseFiles))));

@@ -37,8 +37,8 @@ public class DatasetController {
     }
 
     @GetMapping
-    public Page<Dataset> getPageDataset(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return datasetService.getPageDataset(page, size);
+    public Page<Dataset> getPageDataset(@RequestParam("number") Integer pageNumber, @RequestParam("size") Integer pageSize) {
+        return datasetService.getPageDataset(pageNumber, pageSize);
     }
 
     @GetMapping("/{id}")

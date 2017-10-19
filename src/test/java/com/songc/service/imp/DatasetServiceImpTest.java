@@ -21,6 +21,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
@@ -52,6 +53,14 @@ public class DatasetServiceImpTest {
         List<Dataset> datasets = new ArrayList<>();
         Page<Dataset> datasetPage = new PageImpl<>(datasets);
         given(datasetDao.findAll(any(Pageable.class))).willReturn(datasetPage);
+        Page<Dataset> datasetPage1 = datasetService.getPageDataset(1, 2);
+        assertEquals(datasetPage.getTotalElements(), datasetPage1.getTotalElements());
+    }
+
+    public void getPageDatasetByUserId() {
+        List<Dataset> datasets = new ArrayList<>();
+        Page<Dataset> datasetPage = new PageImpl<>(datasets);
+        given(datasetDao.findByUserIdIs(anyLong(), any(Pageable.class))).willReturn(datasetPage);
         Page<Dataset> datasetPage1 = datasetService.getPageDataset(1, 2);
         assertEquals(datasetPage.getTotalElements(), datasetPage1.getTotalElements());
     }

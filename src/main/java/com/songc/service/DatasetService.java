@@ -13,7 +13,9 @@ public interface DatasetService {
 
     Dataset save(Dataset dataset);
 
-    Page<Dataset> getPageDataset(Integer page, Integer size);
+    Page<Dataset> getPageDataset(Integer pageNumber, Integer pageSize);
+
+    Page<Dataset> getPageDatasetByUserId(Long userId, Integer pageNumber, Integer pageSize);
 
     Dataset findOne(Long id);
 
