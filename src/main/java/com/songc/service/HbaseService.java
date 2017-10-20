@@ -7,13 +7,15 @@ import java.util.List;
 public interface HbaseService{
     HbaseFile save(HbaseFile hbaseFile);
 
-    HbaseFile find(String rowName);
+    List<HbaseFile> save(List<HbaseFile> files);
+
+    HbaseFile find(String rowKey);
 
     List<HbaseFile> findByParentId(Long parentId);
 
-    void delete(String rowName);
+    void delete(String rowKey);
 
     void deleteByParentId(Long parentId);
 
-    List<HbaseFile> save(List<HbaseFile> files);
+    void delete(List<String> rowKeyList);
 }

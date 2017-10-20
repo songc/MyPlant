@@ -114,6 +114,22 @@ public class HbaseDaoTest {
         assertEquals(10, hbaseDao.getRowKeysByParentId(id).size());
     }
 
+    @Test
+    public void delete2() {
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            hbaseFiles.add(new HbaseFile(id, name, content));
+        }
+        List<HbaseFile> newHbaseFiles = hbaseDao.save(hbaseFiles);
+        assertEquals(10, hbaseDao.getRowKeysByParentId(id).size());
+        List<String> rowKeyList = new ArrayList<>();
+        for (HbaseFile newHbaseFile : newHbaseFiles) {
+            rowKeyList.add(newHbaseFile.getRowKey());
+        }
+        hbaseDao.delete(rowKeyList);
+        assertEquals(0, hbaseDao.getRowKeysByParentId(id).size());
+    }
+
     @After
     public void after() {
         hbaseDao.deleteByParentId(id);

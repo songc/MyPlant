@@ -88,6 +88,14 @@ public class HbaseServiceImpTest {
         assertEquals(id, hbaseFiles1.get(0).getParentId());
     }
 
+    @Test
+    public void delete1() throws Exception {
+        List<String> rowKeyList = new ArrayList<>();
+        rowKeyList.add("100000");
+        rowKeyList.add("123456");
+        hbaseService.delete(rowKeyList);
+        verify(hbaseDao).delete(rowKeyList);
+    }
 
 //    @Test
 //    public void addHbaseFile() throws Exception {

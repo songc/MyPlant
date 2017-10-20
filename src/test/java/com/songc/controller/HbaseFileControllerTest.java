@@ -15,6 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,6 +48,15 @@ public class HbaseFileControllerTest {
     @Test
     public void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/hbase/123456"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(StatusEnum.SUCCESS.toString()));
+    }
+
+    public void deleteList() throws Exception {
+        List<String> rowKeyList = new ArrayList<>();
+        rowKeyList.add("00001245");
+        rowKeyList.add("12346411");
+        mockMvc.perform(MockMvcRequestBuilders.delete("/hbase").content(mapper.writeValueAsString(rowKeyList)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(StatusEnum.SUCCESS.toString()));
     }

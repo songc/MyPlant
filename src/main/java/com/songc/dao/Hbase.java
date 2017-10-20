@@ -9,7 +9,7 @@ public interface Hbase {
 
     List<HbaseFile> save(List<HbaseFile> hbaseFiles);
 
-    HbaseFile find(String rowName);
+    HbaseFile find(String rowKey);
 
     List<HbaseFile> findAll();
 
@@ -17,8 +17,10 @@ public interface Hbase {
 
     List<byte[]> getRowKeysByParentId(Long parentId);
 
-    void delete(String rowName);
+    void delete(String rowKey);
 
     void deleteByParentId(Long parentId);
+
+    void delete(List<String> rowKeyList);
 
 }

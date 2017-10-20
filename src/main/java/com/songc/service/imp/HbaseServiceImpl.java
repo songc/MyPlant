@@ -24,8 +24,13 @@ public class HbaseServiceImpl implements HbaseService {
     }
 
     @Override
-    public HbaseFile find(String rowName) {
-        return hbaseDao.find(rowName);
+    public List<HbaseFile> save(List<HbaseFile> files) {
+        return hbaseDao.save(files);
+    }
+
+    @Override
+    public HbaseFile find(String rowKey) {
+        return hbaseDao.find(rowKey);
     }
 
     @Override
@@ -34,8 +39,8 @@ public class HbaseServiceImpl implements HbaseService {
     }
 
     @Override
-    public void delete(String rowName) {
-        hbaseDao.delete(rowName);
+    public void delete(String rowKey) {
+        hbaseDao.delete(rowKey);
     }
 
     @Override
@@ -44,8 +49,8 @@ public class HbaseServiceImpl implements HbaseService {
     }
 
     @Override
-    public List<HbaseFile> save(List<HbaseFile> files) {
-        return hbaseDao.save(files);
+    public void delete(List<String> rowKeyList) {
+        hbaseDao.delete(rowKeyList);
     }
 
 }

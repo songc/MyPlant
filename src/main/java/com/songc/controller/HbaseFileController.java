@@ -6,6 +6,8 @@ import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/hbase")
 public class HbaseFileController {
@@ -25,6 +27,12 @@ public class HbaseFileController {
     @DeleteMapping(value = "/{rowkey}")
     public String delete(@PathVariable("rowkey") String rowKey) {
         hbaseService.delete(rowKey);
+        return StatusEnum.SUCCESS.toString();
+    }
+
+    @DeleteMapping
+    public String delete(@RequestBody List<String> rowKeyList) {
+        hbaseService.delete(rowKeyList);
         return StatusEnum.SUCCESS.toString();
     }
 }

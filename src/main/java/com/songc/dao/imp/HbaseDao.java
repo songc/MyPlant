@@ -77,8 +77,8 @@ public class HbaseDao implements Hbase {
     }
 
     @Override
-    public HbaseFile find(String rowName) {
-        return hbaseTemplate.get(tableName, rowName, new RowMapper<HbaseFile>() {
+    public HbaseFile find(String rowKey) {
+        return hbaseTemplate.get(tableName, rowKey, new RowMapper<HbaseFile>() {
             @Override
             public HbaseFile mapRow(Result result, int i) throws Exception {
                 return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId)),
@@ -115,8 +115,8 @@ public class HbaseDao implements Hbase {
     }
 
     @Override
-    public void delete(String rowName) {
-        hbaseTemplate.delete(tableName, rowName, family);
+    public void delete(String rowKey) {
+        hbaseTemplate.delete(tableName, rowKey, family);
     }
 
     @Override
@@ -127,6 +127,21 @@ public class HbaseDao implements Hbase {
                 List<Delete> deletes = new ArrayList<>();
                 for (byte[] rowKey : getRowKeysByParentId(parentId)) {
                     deletes.add(new Delete(rowKey));
+                }
+                hTableInterface.delete(deletes);
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public void delete(List<String> rowKeyList) {
+        hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
+            @Override
+            public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
+                List<Delete> deletes = new ArrayList<>();
+                for (String rowKey : rowKeyList) {
+                    deletes.add(new Delete(rowKey.getBytes()));
                 }
                 hTableInterface.delete(deletes);
                 return null;
