@@ -55,12 +55,17 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
+    public List<HbaseFile> findFile(Long parentId) {
+        return hbaseService.findByParentId(parentId);
+    }
+
+    @Override
     public void delete(Long id) {
         datasetDao.delete(id);
     }
 
     @Override
-    public List<HbaseFile> findFile(Long parentId) {
-        return hbaseService.findByParentId(parentId);
+    public Dataset update(Dataset dataset) {
+        return datasetDao.save(dataset);
     }
 }

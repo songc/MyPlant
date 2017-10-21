@@ -58,4 +58,20 @@ public class DatasetDaoTest {
         assertEquals(1, datasetsPage2.getTotalElements());
     }
 
+    @Test
+    public void update() throws InterruptedException {
+        Long id = 200L;
+        Dataset dataset = new Dataset();
+        dataset.setUserId(id);
+        dataset.setAuthor("songc");
+        dataset.setName("dataset1");
+        dataset.setDescription("something");
+        Dataset dataset1 = datasetDao.save(dataset);
+        dataset.setId(dataset1.getId());
+        dataset.setAuthor("songc2");
+        Dataset dataset2 = datasetDao.save(dataset);
+        assertEquals(dataset1.getCreatedAt(), dataset2.getCreatedAt());
+        assertEquals("songc2", dataset2.getAuthor());
+    }
+
 }

@@ -21,8 +21,10 @@ public interface DatasetService {
 
     List<Dataset> findByUserId(Long userId);
 
+    List<HbaseFile> findFile(Long parentId);
+
     void delete(Long id);
 
-    List<HbaseFile> findFile(Long parentId);
+    Dataset update(Dataset dataset);
 
 }

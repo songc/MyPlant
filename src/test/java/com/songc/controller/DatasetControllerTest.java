@@ -73,6 +73,16 @@ public class DatasetControllerTest {
     }
 
     @Test
+    public void update() throws Exception {
+        Dataset dataset = new Dataset();
+        given(this.datasetService.update(any(Dataset.class))).willReturn(dataset);
+        this.mockMvc.perform(put("/dataset")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(dataset)))
+                .andExpect(content().string(mapper.writeValueAsString(dataset)));
+    }
+
+    @Test
     public void findById() throws Exception {
         Dataset dataset = new Dataset();
         dataset.setUserId(1L);

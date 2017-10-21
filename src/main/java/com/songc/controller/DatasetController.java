@@ -41,10 +41,16 @@ public class DatasetController {
         return datasetService.getPageDataset(pageNumber, pageSize);
     }
 
+    @PutMapping
+    public Dataset update(@RequestBody Dataset dataset) {
+        return datasetService.update(dataset);
+    }
+
     @GetMapping("/{id}")
     public Dataset findById(@PathVariable("id") Long id) {
         return datasetService.findOne(id);
     }
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         datasetService.delete(id);
