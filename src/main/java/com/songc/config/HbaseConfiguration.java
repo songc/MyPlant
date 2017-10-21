@@ -17,6 +17,7 @@ public class HbaseConfiguration {
         configuration.set("hbase.roodir","hdfs://master:54310/hbase");
         configuration.set("hbase.zookeeper.quorum","master");
         configuration.set("hbase.zookeeper.property.clientPort", "2181");
+        configuration.set("hbase.client.keyvalue.maxsize", "524288000");
         return new HbaseTemplate(configuration);
     }
 }
