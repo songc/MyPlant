@@ -57,11 +57,13 @@ public class DatasetServiceImpTest {
         assertEquals(datasetPage.getTotalElements(), datasetPage1.getTotalElements());
     }
 
+    @Test
     public void getPageDatasetByUserId() {
+        Long id = 100L;
         List<Dataset> datasets = new ArrayList<>();
         Page<Dataset> datasetPage = new PageImpl<>(datasets);
         given(datasetDao.findByUserIdIs(anyLong(), any(Pageable.class))).willReturn(datasetPage);
-        Page<Dataset> datasetPage1 = datasetService.getPageDataset(1, 2);
+        Page<Dataset> datasetPage1 = datasetService.getPageDatasetByUserId(id, 1, 2);
         assertEquals(datasetPage.getTotalElements(), datasetPage1.getTotalElements());
     }
 
@@ -90,9 +92,11 @@ public class DatasetServiceImpTest {
         Long id = 100L;
         datasetService.delete(id);
         verify(datasetDao).delete(id);
+        verify(hbaseService).deleteByParentId(id);
     }
 
 
+    @Test
     public void findFile() {
         Long id = 100L;
         List<HbaseFile> hbaseFiles = new ArrayList<>();
@@ -100,6 +104,15 @@ public class DatasetServiceImpTest {
         given(hbaseService.findByParentId(id)).willReturn(hbaseFiles);
         List<HbaseFile> hbaseFiles1 = datasetService.findFile(id);
         assertEquals(hbaseFiles.size(), hbaseFiles1.size());
+    }
+
+    @Test
+    public void update() {
+        Long id = 100L;
+        Dataset dataset = new Dataset();
+        dataset.setId(id);
+        datasetService.update(dataset);
+        verify(datasetDao).save(dataset);
     }
 
 }

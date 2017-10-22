@@ -61,6 +61,7 @@ public class DatasetServiceImpl implements DatasetService {
 
     @Override
     public void delete(Long id) {
+        hbaseService.deleteByParentId(id);
         datasetDao.delete(id);
     }
 

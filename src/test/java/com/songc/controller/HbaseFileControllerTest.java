@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -52,11 +53,14 @@ public class HbaseFileControllerTest {
                 .andExpect(content().string(StatusEnum.SUCCESS.toString()));
     }
 
+    @Test
     public void deleteList() throws Exception {
         List<String> rowKeyList = new ArrayList<>();
         rowKeyList.add("00001245");
         rowKeyList.add("12346411");
-        mockMvc.perform(MockMvcRequestBuilders.delete("/hbase").content(mapper.writeValueAsString(rowKeyList)))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/hbase")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(rowKeyList)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(StatusEnum.SUCCESS.toString()));
     }
