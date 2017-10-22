@@ -2,11 +2,9 @@ package com.songc.dto;
 
 import com.songc.entity.User;
 import com.songc.entity.data.Sex;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UserDTO {
     private Long id;
     private String username;

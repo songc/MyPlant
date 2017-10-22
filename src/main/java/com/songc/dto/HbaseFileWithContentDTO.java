@@ -1,11 +1,9 @@
 package com.songc.dto;
 
 import com.songc.entity.HbaseFile;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class HbaseFileWithContentDTO {
     private String rowKey;
     private Long parentId;
