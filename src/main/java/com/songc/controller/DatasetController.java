@@ -6,12 +6,15 @@ import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.DatasetService;
 import com.songc.service.MultipartFileService;
+import com.songc.util.HbaseUtil;
 import com.songc.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -66,5 +69,11 @@ public class DatasetController {
     @GetMapping(value = "/{id}/file")
     public List<HbaseFileDTO> findFile(@PathVariable("id") Long parentId) {
         return MapperUtil.convert(datasetService.findFile(parentId));
+    }
+
+    @GetMapping(value = "/{id}/zip")
+    public void download(@PathVariable("id") Long parentId, @RequestParam("name") String datasetName, HttpServletResponse response) throws IOException {
+        List<HbaseFile> hbaseFileList = datasetService.findFile(parentId);
+        HbaseUtil.convert2Zip(response, hbaseFileList, datasetName);
     }
 }

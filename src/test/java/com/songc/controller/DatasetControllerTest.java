@@ -27,8 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +46,7 @@ public class DatasetControllerTest {
 
     @MockBean
     private MultipartFileService multipartFileService;
+
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -115,5 +115,13 @@ public class DatasetControllerTest {
         given(datasetService.findFile(any(Long.TYPE))).willReturn(files);
         this.mockMvc.perform(get("/dataset/1/file"))
                 .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(files))));
+    }
+
+    @Test
+    public void download() throws Exception {
+        List<HbaseFile> files = new ArrayList<>();
+        given(datasetService.findFile(anyLong())).willReturn(files);
+        this.mockMvc.perform(get("/dataset/1/zip?name=songc"))
+                .andExpect(status().isOk());
     }
 }
