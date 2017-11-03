@@ -14,4 +14,6 @@ public interface DatasetDao extends JpaRepository<Dataset, Long> {
     List<Dataset> findByUserId(Long userId);
 
     Page<Dataset> findByUserIdIs(Long userId, Pageable pageable);
+
+    Page<Dataset> findByNameContaining(String keyWord, Pageable pageable);
 }

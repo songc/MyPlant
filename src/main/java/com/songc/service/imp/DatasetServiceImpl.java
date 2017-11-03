@@ -45,6 +45,12 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
+    public Page<Dataset> search(String keyWord, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = new PageRequest(pageNumber, pageSize);
+        return datasetDao.findByNameContaining(keyWord, pageable);
+    }
+
+    @Override
     public Dataset findOne(Long id) {
         return datasetDao.findOne(id);
     }

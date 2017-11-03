@@ -17,6 +17,8 @@ public interface DatasetService {
 
     Page<Dataset> getPageDatasetByUserId(Long userId, Integer pageNumber, Integer pageSize);
 
+    Page<Dataset> search(String keyWord, Integer pageNumber, Integer pageSize);
+
     Dataset findOne(Long id);
 
     List<Dataset> findByUserId(Long userId);

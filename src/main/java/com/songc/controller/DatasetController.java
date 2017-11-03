@@ -44,6 +44,12 @@ public class DatasetController {
         return datasetService.getPageDataset(pageNumber, pageSize);
     }
 
+    @GetMapping(value = "/query")
+    public Page<Dataset> search(@RequestParam("keyWord") String keyWord, @RequestParam("number") Integer pageNumber,
+                                @RequestParam("size") Integer pageSize) {
+        return datasetService.search(keyWord, pageNumber, pageSize);
+    }
+
     @PutMapping
     public Dataset update(@RequestBody Dataset dataset) {
         return datasetService.update(dataset);

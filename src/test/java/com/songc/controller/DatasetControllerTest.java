@@ -73,6 +73,22 @@ public class DatasetControllerTest {
     }
 
     @Test
+    public void search() throws Exception {
+        Integer page = 1;
+        Integer size = 10;
+        Pageable pageable = new PageRequest(page, size);
+        List<Dataset> datasets = new ArrayList<>();
+        Page<Dataset> datasetPage = new PageImpl<>(datasets, pageable, 10);
+        given(this.datasetService.search("data", 1, 10)).willReturn(datasetPage);
+        this.mockMvc.perform(get("/dataset/query")
+                .param("keyWord", "data")
+                .param("number", "1")
+                .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(datasetPage)));
+    }
+
+    @Test
     public void update() throws Exception {
         Dataset dataset = new Dataset();
         given(this.datasetService.update(any(Dataset.class))).willReturn(dataset);

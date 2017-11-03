@@ -38,24 +38,22 @@ public class DatasetDaoTest {
     public void findByUserIdIs() throws Exception {
         Long id = 200L;
         Long id2 = 300L;
-        Dataset dataset = new Dataset("Test", "songc", State.open, "songc", id);
-        Dataset dataset2 = new Dataset("Test", "songc", State.open, "songc", id2);
         List<Dataset> list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             if (i < 10) {
-                list.add(dataset);
+                list.add(new Dataset("Test", "songc", State.open, "songc", id));
             } else {
-                list.add(dataset2);
+                list.add(new Dataset("Test", "songc", State.open, "songc", id2));
             }
         }
         datasetDao.save(list);
         Pageable pageable = new PageRequest(0, 4);
         Page<Dataset> datasetPage = datasetDao.findByUserIdIs(id, pageable);
         Page<Dataset> datasetsPage2 = datasetDao.findByUserIdIs(id2, pageable);
-        assertEquals(1, datasetPage.getTotalPages());
-        assertEquals(1, datasetsPage2.getTotalPages());
-        assertEquals(1, datasetPage.getTotalElements());
-        assertEquals(1, datasetsPage2.getTotalElements());
+        assertEquals(3, datasetPage.getTotalPages());
+        assertEquals(2, datasetsPage2.getTotalPages());
+        assertEquals(10, datasetPage.getTotalElements());
+        assertEquals(5, datasetsPage2.getTotalElements());
     }
 
     @Test
@@ -72,6 +70,26 @@ public class DatasetDaoTest {
         Dataset dataset2 = datasetDao.save(dataset);
         assertEquals(dataset1.getCreatedAt(), dataset2.getCreatedAt());
         assertEquals("songc2", dataset2.getAuthor());
+    }
+
+    @Test
+    public void findByNameContaining() {
+        Long id = 200L;
+        Long id2 = 300L;
+        List<Dataset> list = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            if (i < 10) {
+                list.add(new Dataset("Test1", "songc", State.open, "songc", id));
+            } else {
+                list.add(new Dataset("Test123", "songc", State.open, "songc", id2));
+            }
+        }
+        datasetDao.save(list);
+        Pageable pageable = new PageRequest(0, 10);
+        Page<Dataset> datasetPage = datasetDao.findByNameContaining("Test", pageable);
+        Page<Dataset> datasetsPage2 = datasetDao.findByNameContaining("Test12", pageable);
+        assertEquals(5, datasetsPage2.getTotalElements());
+        assertEquals(15, datasetPage.getTotalElements());
     }
 
 }
