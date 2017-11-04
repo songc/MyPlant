@@ -28,7 +28,7 @@ public class SignalAnalysisController {
         return new APExtractService(rawSignal, rate).getAllAPInfo();
     }
 
-    @PostMapping(value = "/ap/judgment/{rate}")
+    @PostMapping(value = "/ap/judgement/{rate}")
     public List<Boolean> isAP(@RequestBody Double[][] apLike, @PathVariable Integer rate) {
         return new APJudgeService(apLike, rate).isAP();
     }
