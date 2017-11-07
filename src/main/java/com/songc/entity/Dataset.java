@@ -26,6 +26,7 @@ public class Dataset{
     @Column(nullable = false)
     private String author;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private State state=State.open;
 
