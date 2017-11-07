@@ -1,5 +1,6 @@
 package com.songc.core.image;
 
+import com.songc.entity.HbaseFile;
 import com.songc.util.ImageUtil;
 
 import javax.imageio.ImageIO;
@@ -15,9 +16,14 @@ public class TiffImage {
     private byte[] content;
     private String name;
 
-    public TiffImage(byte[] content, String name) {
+    TiffImage(byte[] content, String name) {
         this.content = content;
         this.name = name;
+    }
+
+    public TiffImage(HbaseFile hbaseFile) {
+        this.content = hbaseFile.getContent();
+        this.name = hbaseFile.getName();
     }
 
     public BufferedImage getImage() {
