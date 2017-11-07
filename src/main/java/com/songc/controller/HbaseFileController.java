@@ -19,13 +19,13 @@ public class HbaseFileController {
         this.hbaseService = hbaseService;
     }
 
-    @GetMapping(value = "/{rowkey}")
-    public HbaseFileWithContentDTO find(@PathVariable("rowkey") String rowKey) {
+    @GetMapping(value = "/{rowKey}")
+    public HbaseFileWithContentDTO find(@PathVariable("rowKey") String rowKey) {
         return new HbaseFileWithContentDTO(hbaseService.find(rowKey));
     }
 
-    @DeleteMapping(value = "/{rowkey}")
-    public String delete(@PathVariable("rowkey") String rowKey) {
+    @DeleteMapping(value = "/{rowKey}")
+    public String delete(@PathVariable("rowKey") String rowKey) {
         hbaseService.delete(rowKey);
         return StatusEnum.SUCCESS.toString();
     }
