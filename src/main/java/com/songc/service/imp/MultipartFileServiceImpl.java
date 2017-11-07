@@ -9,8 +9,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MultipartFileServiceImpl implements MultipartFileService {
@@ -39,20 +39,19 @@ public class MultipartFileServiceImpl implements MultipartFileService {
 
     @Override
     public List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles) {
-        List<HbaseFile> files = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            if (!multipartFile.isEmpty()) {
-                HbaseFile file = new HbaseFile();
-                file.setName(multipartFile.getOriginalFilename());
-                file.setParentId(parentId);
-                try {
-                    file.setContent(multipartFile.getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                files.add(file);
-            }
-        }
+        List<HbaseFile> files = multipartFiles.stream()
+                .filter(s -> !s.isEmpty())
+                .map(multipartFile -> {
+                    HbaseFile file = new HbaseFile();
+                    file.setName(multipartFile.getOriginalFilename());
+                    file.setParentId(parentId);
+                    try {
+                        file.setContent(multipartFile.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return file;
+                }).collect(Collectors.toList());
         return hbaseService.save(files);
     }
 }
