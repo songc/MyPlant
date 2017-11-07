@@ -58,8 +58,9 @@ public class HbaseDao implements Hbase {
             return hbaseFile;
         } catch (IOException e) {
             e.printStackTrace();
+            hbaseFile.setRowKey(null);
         }
-        return null;
+        return hbaseFile;
     }
 
     @Override
@@ -81,7 +82,7 @@ public class HbaseDao implements Hbase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return hbaseFiles;
     }
 
     @Override
@@ -104,17 +105,26 @@ public class HbaseDao implements Hbase {
         Scan scan = new Scan();
         ResultScanner results;
         List<HbaseFile> hbaseFiles = new ArrayList<>();
-        try {
-            Table table = connection.getTable(TableName.valueOf(tableName));
-            results = table.getScanner(scan);
+        results = getScanner(scan);
+        if (results != null) {
             for (Result result : results) {
                 hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
                         , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
             }
+        }
+        return hbaseFiles;
+    }
+
+    private ResultScanner getScanner(Scan scan) {
+        ResultScanner results;
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            results = table.getScanner(scan);
+            return results;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return hbaseFiles;
+        return null;
     }
 
     @Override
@@ -122,17 +132,13 @@ public class HbaseDao implements Hbase {
         String prefix = StringUtils.reverse(String.format("%016d", parentId));
         Scan scan = new Scan(prefix.getBytes());
         scan.setFilter(new PrefixFilter(prefix.getBytes()));
-        ResultScanner results;
+        ResultScanner results = getScanner(scan);
         List<HbaseFile> hbaseFiles = new ArrayList<>();
-        try {
-            Table table = connection.getTable(TableName.valueOf(tableName));
-            results = table.getScanner(scan);
+        if (results != null) {
             for (Result result : results) {
                 hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
                         , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return hbaseFiles;
     }
@@ -183,15 +189,11 @@ public class HbaseDao implements Hbase {
         Scan scan = new Scan(prefix.getBytes());
         scan.setFilter(filterList);
         List<byte[]> rowKeys = new ArrayList<>();
-        ResultScanner results;
-        try {
-            Table table = connection.getTable(TableName.valueOf(tableName));
-            results = table.getScanner(scan);
+        ResultScanner results = getScanner(scan);
+        if (results != null) {
             for (Result result : results) {
                 rowKeys.add(result.getRow());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return rowKeys;
     }
