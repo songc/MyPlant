@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DatasetServiceImpTest {
+public class DatasetServiceImplTest {
 
     @MockBean
     private DatasetDao datasetDao;

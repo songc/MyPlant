@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class HbaseServiceImpTest {
+public class HbaseServiceImplTest {
 
     @Autowired
     private HbaseService hbaseService;

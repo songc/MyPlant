@@ -15,7 +15,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserServiceImpTest {
+public class UserServiceImplTest {
 
     @MockBean
     private UserDao userDao;
