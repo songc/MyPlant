@@ -1,11 +1,12 @@
 package com.songc.dto;
 
 import com.songc.entity.HbaseFile;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+/**
+ * Created by @author songc
+ */
+@Data
 public class HbaseFileDTO {
     private String rowKey;
     private Long parentId;
