@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,7 +116,7 @@ public class HbaseDaoTest {
     }
 
     @Test
-    public void delete2() {
+    public void delete2() throws IOException {
         List<HbaseFile> hbaseFiles = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             hbaseFiles.add(new HbaseFile(id, name, content));
@@ -131,7 +132,7 @@ public class HbaseDaoTest {
     }
 
     @After
-    public void after() {
+    public void after() throws IOException {
         hbaseDao.deleteByParentId(id);
     }
 

@@ -4,6 +4,7 @@ import com.songc.dao.Hbase;
 import com.songc.entity.HbaseFile;
 import com.songc.util.HbaseUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
@@ -11,13 +12,12 @@ import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.hadoop.hbase.HbaseTemplate;
-import org.springframework.data.hadoop.hbase.RowMapper;
-import org.springframework.data.hadoop.hbase.TableCallback;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class HbaseDao implements Hbase {
@@ -25,78 +25,96 @@ public class HbaseDao implements Hbase {
     @Value("${hbase.table.name}")
     private String tableName;
 
-    private String family="h_info";
+    private static String family = "h_info";
 
     private byte[] qParentId = Bytes.toBytes("parentId");
     private byte[] qName = Bytes.toBytes("name");
     private byte[] qContent = Bytes.toBytes("content");
+    private static byte[] qFamily;
 
-    private HbaseTemplate hbaseTemplate;
+    static {
+        qFamily = family.getBytes();
+    }
+
+    private Connection connection;
 
     @Autowired
-    public HbaseDao(HbaseTemplate hbaseTemplate) {
-        this.hbaseTemplate = hbaseTemplate;
+    public HbaseDao(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
     public HbaseFile save(HbaseFile hbaseFile) {
-        return hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
-            @Override
-            public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
-                String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
-                Put p = new Put(rowKey.getBytes());
-                p.add(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
-                p.add(family.getBytes(), qName, hbaseFile.getName().getBytes());
-                p.add(family.getBytes(), qContent, hbaseFile.getContent());
-                hTableInterface.put(p);
-                return hbaseFile;
-            }
-        });
+
+        String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
+        hbaseFile.setRowKey(rowKey);
+        Put p = new Put(rowKey.getBytes());
+        p.addColumn(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
+        p.addColumn(family.getBytes(), qName, hbaseFile.getName().getBytes());
+        p.addColumn(family.getBytes(), qContent, hbaseFile.getContent());
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            table.put(p);
+            return hbaseFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<HbaseFile> save(List<HbaseFile> hbaseFiles) {
-        hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
-            @Override
-            public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
-                List<Put> puts = new ArrayList<>();
-                for (HbaseFile hbaseFile : hbaseFiles) {
-                    String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
-                    hbaseFile.setRowKey(rowKey);
-                    Put p = new Put(Bytes.toBytes(rowKey));
-                    p.add(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
-                    p.add(family.getBytes(), qName, hbaseFile.getName().getBytes());
-                    p.add(family.getBytes(), qContent, hbaseFile.getContent());
-                    puts.add(p);
-                }
-                hTableInterface.put(puts);
-                return null;
-            }
-        });
-        return hbaseFiles;
+        List<Put> puts = new ArrayList<>();
+        for (HbaseFile hbaseFile : hbaseFiles) {
+            String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
+            hbaseFile.setRowKey(rowKey);
+            Put p = new Put(Bytes.toBytes(rowKey));
+            p.addColumn(qFamily, qParentId, Bytes.toBytes(hbaseFile.getParentId()));
+            p.addColumn(qFamily, qName, hbaseFile.getName().getBytes());
+            p.addColumn(qFamily, qContent, hbaseFile.getContent());
+            puts.add(p);
+        }
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            table.put(puts);
+            return hbaseFiles;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public HbaseFile find(String rowKey) {
-        return hbaseTemplate.get(tableName, rowKey, new RowMapper<HbaseFile>() {
-            @Override
-            public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId)),
-                        Bytes.toString(result.getValue(family.getBytes(), qName)),
-                        result.getValue(family.getBytes(), qContent));
-            }
-        });
+        Get g = new Get(rowKey.getBytes());
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            Result result = table.get(g);
+            return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId)),
+                    Bytes.toString(result.getValue(qFamily, qName)),
+                    result.getValue(qFamily, qContent));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public List<HbaseFile> findAll() {
-        return hbaseTemplate.find(tableName,family, new RowMapper<HbaseFile>() {
-            @Override
-            public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId))
-                        , Bytes.toString(result.getValue(family.getBytes(), qName)), result.getValue(family.getBytes(), qContent));
+        Scan scan = new Scan();
+        ResultScanner results;
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            results = table.getScanner(scan);
+            for (Result result : results) {
+                hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
+                        , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hbaseFiles;
     }
 
     @Override
@@ -104,49 +122,56 @@ public class HbaseDao implements Hbase {
         String prefix = StringUtils.reverse(String.format("%016d", parentId));
         Scan scan = new Scan(prefix.getBytes());
         scan.setFilter(new PrefixFilter(prefix.getBytes()));
-        return hbaseTemplate.find(tableName, scan, new RowMapper<HbaseFile>() {
-            @Override
-            public HbaseFile mapRow(Result result, int i) throws Exception {
-                return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(family.getBytes(), qParentId))
-                        , Bytes.toString(result.getValue(family.getBytes(), qName))
-                        , result.getValue(family.getBytes(), qContent));
+        ResultScanner results;
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            results = table.getScanner(scan);
+            for (Result result : results) {
+                hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
+                        , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
             }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hbaseFiles;
     }
 
     @Override
     public void delete(String rowKey) {
-        hbaseTemplate.delete(tableName, rowKey, family);
+        Delete delete = new Delete(rowKey.getBytes());
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            table.delete(delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deleteByParentId(Long parentId) {
-        hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
-            @Override
-            public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
-                List<Delete> deletes = new ArrayList<>();
-                for (byte[] rowKey : getRowKeysByParentId(parentId)) {
-                    deletes.add(new Delete(rowKey));
-                }
-                hTableInterface.delete(deletes);
-                return null;
-            }
-        });
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            table.delete(this.getRowKeysByParentId(parentId)
+                    .stream()
+                    .map(Delete::new)
+                    .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void delete(List<String> rowKeyList) {
-        hbaseTemplate.execute(tableName, new TableCallback<HbaseFile>() {
-            @Override
-            public HbaseFile doInTable(HTableInterface hTableInterface) throws Throwable {
-                List<Delete> deletes = new ArrayList<>();
-                for (String rowKey : rowKeyList) {
-                    deletes.add(new Delete(rowKey.getBytes()));
-                }
-                hTableInterface.delete(deletes);
-                return null;
-            }
-        });
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            table.delete(rowKeyList.stream()
+                    .map(String::getBytes)
+                    .map(Delete::new)
+                    .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -157,17 +182,17 @@ public class HbaseDao implements Hbase {
         filterList.addFilter(new PrefixFilter(prefix.getBytes()));
         Scan scan = new Scan(prefix.getBytes());
         scan.setFilter(filterList);
-        List<byte[]> rowkeys = new ArrayList<>();
-        hbaseTemplate.execute(tableName, new TableCallback<Object>() {
-            @Override
-            public Object doInTable(HTableInterface hTableInterface) throws Throwable {
-                ResultScanner results = hTableInterface.getScanner(scan);
-                for (Result result : results) {
-                    rowkeys.add(result.getRow());
-                }
-                return null;
+        List<byte[]> rowKeys = new ArrayList<>();
+        ResultScanner results;
+        try {
+            Table table = connection.getTable(TableName.valueOf(tableName));
+            results = table.getScanner(scan);
+            for (Result result : results) {
+                rowKeys.add(result.getRow());
             }
-        });
-        return rowkeys;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rowKeys;
     }
 }
