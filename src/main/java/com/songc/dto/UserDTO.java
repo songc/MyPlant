@@ -1,7 +1,7 @@
 package com.songc.dto;
 
 import com.songc.entity.User;
-import com.songc.entity.data.Sex;
+import com.songc.entity.data.SexEnum;
 import lombok.Data;
 
 @Data
@@ -9,7 +9,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
-    private Sex sex;
+    private SexEnum sex;
     private String address;
 
     public UserDTO() {

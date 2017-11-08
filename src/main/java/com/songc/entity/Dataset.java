@@ -1,6 +1,7 @@
 package com.songc.entity;
 
-import com.songc.entity.data.State;
+import com.songc.entity.data.DatasetModeEnum;
+import com.songc.entity.data.DatasetTypeEnum;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by songc on 4/27/2017.
+ * Created by @author songc on 4/27/2017.
  */
 @Entity
 @Data
@@ -28,7 +29,11 @@ public class Dataset{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private State state=State.open;
+    private DatasetTypeEnum type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DatasetModeEnum state = DatasetModeEnum.OPEN;
 
     @Column(columnDefinition = "varchar(500)")
     private String description;
@@ -43,9 +48,10 @@ public class Dataset{
 
     private Long userId;
 
-    public Dataset(String name, String author, State state, String description, Long userId) {
+    public Dataset(String name, String author, DatasetTypeEnum type, DatasetModeEnum state, String description, Long userId) {
         this.name = name;
         this.author = author;
+        this.type = type;
         this.state = state;
         this.description = description;
         this.userId = userId;

@@ -1,7 +1,8 @@
 package com.songc.dao;
 
 import com.songc.entity.Dataset;
-import com.songc.entity.data.State;
+import com.songc.entity.data.DatasetModeEnum;
+import com.songc.entity.data.DatasetTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class DatasetDaoTest {
     @Test
     public void findByUserId() throws Exception {
         Long id = 100L;
-        Dataset dataset = new Dataset("Test", "songc", State.open, "songc", id);
+        Dataset dataset = new Dataset("Test", "songc", DatasetTypeEnum.CSV, DatasetModeEnum.OPEN, "songc", id);
         datasetDao.save(dataset);
         List<Dataset> datasets = datasetDao.findByUserId(id);
         assertEquals(1, datasets.size());
@@ -41,9 +42,9 @@ public class DatasetDaoTest {
         List<Dataset> list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             if (i < 10) {
-                list.add(new Dataset("Test", "songc", State.open, "songc", id));
+                list.add(new Dataset("Test", "songc", DatasetTypeEnum.CSV, DatasetModeEnum.OPEN, "songc", id));
             } else {
-                list.add(new Dataset("Test", "songc", State.open, "songc", id2));
+                list.add(new Dataset("Test", "songc", DatasetTypeEnum.CSV, DatasetModeEnum.OPEN, "songc", id2));
             }
         }
         datasetDao.save(list);
@@ -64,6 +65,8 @@ public class DatasetDaoTest {
         dataset.setAuthor("songc");
         dataset.setName("dataset1");
         dataset.setDescription("something");
+        dataset.setState(DatasetModeEnum.OPEN);
+        dataset.setType(DatasetTypeEnum.CSV);
         Dataset dataset1 = datasetDao.save(dataset);
         dataset.setId(dataset1.getId());
         dataset.setAuthor("songc2");
@@ -79,9 +82,9 @@ public class DatasetDaoTest {
         List<Dataset> list = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             if (i < 10) {
-                list.add(new Dataset("Test1", "songc", State.open, "songc", id));
+                list.add(new Dataset("Test1", "songc", DatasetTypeEnum.CSV, DatasetModeEnum.OPEN, "songc", id));
             } else {
-                list.add(new Dataset("Test123", "songc", State.open, "songc", id2));
+                list.add(new Dataset("Test123", "songc", DatasetTypeEnum.CSV, DatasetModeEnum.OPEN, "songc", id2));
             }
         }
         datasetDao.save(list);

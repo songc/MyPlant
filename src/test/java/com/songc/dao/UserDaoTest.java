@@ -1,7 +1,7 @@
 package com.songc.dao;
 
 import com.songc.entity.User;
-import com.songc.entity.data.Sex;
+import com.songc.entity.data.SexEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserDaoTest {
         String password = "443502355";
         String email = "443502355@qq.com";
         String address = "beijing";
-        Sex sex = Sex.MAN;
+        SexEnum sex = SexEnum.MAN;
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);

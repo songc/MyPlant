@@ -1,6 +1,6 @@
 package com.songc.entity;
 
-import com.songc.entity.data.Sex;
+import com.songc.entity.data.SexEnum;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by songc on 4/26/2017.
+ * Created by @author songc on 4/26/2017.
  */
 @Entity
 @Data
@@ -32,7 +32,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Sex sex;
+    private SexEnum sex;
 
     @Column(nullable = false)
     private String address;
@@ -48,7 +48,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, Sex sex, String address) {
+    public User(String username, String password, String email, SexEnum sex, String address) {
 
         this.username = username;
         this.password = password;
