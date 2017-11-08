@@ -1,5 +1,6 @@
 package com.songc.core.image;
 
+import com.songc.entity.HbaseFile;
 import com.songc.util.ImageUtil;
 import org.junit.Test;
 
@@ -34,7 +35,6 @@ public class TiffImageTest {
 
     @Test
     public void getGray() throws IOException {
-
         String path = "F:\\Download\\software\\彩图\\1011165442.tiff";
         BufferedImage bufferedImage = ImageIO.read(new File(path));
         BufferedImage grayImage = ImageUtil.convert2Gray(bufferedImage);
@@ -74,6 +74,22 @@ public class TiffImageTest {
         System.out.println(data2.length);
         System.out.println(sum);
         System.out.println(sum / (width * height));
+    }
+
+    @Test
+    public void getPng() throws IOException {
+        String path = "F:\\Download\\software\\彩图\\1011165442.tiff";
+        File file = new File(path);
+        InputStream in = new FileInputStream(file);
+        Long length = file.length();
+        byte[] fileContent = new byte[length.intValue()];
+        in.read(fileContent);
+        in.close();
+        HbaseFile hbaseFile = new HbaseFile();
+        hbaseFile.setContent(fileContent);
+        hbaseFile.setName(file.getName());
+        TiffImage image = new TiffImage(hbaseFile);
+        ImageIO.write(image.getImage(), "png", new File("C:\\Users\\songc\\Desktop\\restful\\1.png"));
     }
 
     @Test

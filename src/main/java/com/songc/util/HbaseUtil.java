@@ -1,13 +1,12 @@
 package com.songc.util;
 
+import com.songc.core.image.TiffImage;
 import com.songc.entity.HbaseFile;
 import org.apache.commons.lang.StringUtils;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -36,5 +35,12 @@ public class HbaseUtil {
             zipOutputStream.closeEntry();
         }
         zipOutputStream.close();
+    }
+
+    public static byte[] getPngBytes(HbaseFile hbaseFile) throws IOException {
+        TiffImage tiffImage = new TiffImage(hbaseFile);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(tiffImage.getImage(), "png", out);
+        return out.toByteArray();
     }
 }

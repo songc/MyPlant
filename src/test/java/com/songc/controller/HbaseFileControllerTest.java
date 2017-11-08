@@ -16,10 +16,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,6 +48,22 @@ public class HbaseFileControllerTest {
         mockMvc.perform(get("/hbase/123456"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(new HbaseFileWithContentDTO(hbaseFile))));
+    }
+
+    @Test
+    public void getPng() throws Exception {
+        String path = "C:\\Users\\songc\\Desktop\\restful\\1.png";
+        File file = new File(path);
+        InputStream in = new FileInputStream(file);
+        Long length = file.length();
+        byte[] fileContent = new byte[length.intValue()];
+        in.read(fileContent);
+        HbaseFile hbaseFile = new HbaseFile();
+        hbaseFile.setName(file.getName());
+        hbaseFile.setContent(fileContent);
+        given(hbaseService.find(anyString())).willReturn(hbaseFile);
+        mockMvc.perform(get("/hbase/png/123456"))
+                .andExpect(status().isOk());
     }
 
     @Test

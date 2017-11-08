@@ -35,7 +35,7 @@ public class TiffImage {
         return null;
     }
 
-    public BufferedImage convert2Gray() {
+    private BufferedImage convert2Gray() {
         return ImageUtil.convert2Gray(this.getImage());
     }
 

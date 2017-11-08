@@ -3,9 +3,12 @@ package com.songc.controller;
 import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.HbaseService;
+import com.songc.util.HbaseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,11 @@ public class HbaseFileController {
     @GetMapping(value = "/{rowKey}")
     public HbaseFileWithContentDTO find(@PathVariable("rowKey") String rowKey) {
         return new HbaseFileWithContentDTO(hbaseService.find(rowKey));
+    }
+
+    @GetMapping(value = "/png/{rowKey}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPng(@PathVariable("rowKey") String rowKey) throws IOException {
+        return HbaseUtil.getPngBytes(hbaseService.find(rowKey));
     }
 
     @DeleteMapping(value = "/{rowKey}")
