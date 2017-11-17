@@ -8,7 +8,7 @@ import java.util.List;
  * on 2017/11/7
  */
 public interface ImageAnalysisService {
-    int[] singleRegion(Long datasetId, int startX, int startY, int width, int height);
+    double[] singleRegion(Long datasetId, int startX, int startY, int width, int height);
 
-    List<int[]> multiRegion(Long datasetId, int width, int height);
+    List<double[]> multiRegion(Long datasetId, int width, int height);
 }

@@ -24,14 +24,14 @@ public class ImageUtil {
         return grayImage;
     }
 
-    public static int getRegionGrayAverage(BufferedImage image, int startX, int startY, int width, int height) {
+    public static double getRegionGrayAverage(BufferedImage image, int startX, int startY, int width, int height) {
         int[] data = new int[width * height];
         data = image.getRGB(startX, startY, width, height, data, 0, width);
         int sum = 0;
         for (int i : data) {
             sum += i & 0xff;
         }
-        return sum / data.length;
+        return sum * 1.0 / data.length;
     }
 
     private static int colorToRGB(int alpha, int red, int green, int blue) {

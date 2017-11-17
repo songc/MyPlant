@@ -43,16 +43,16 @@ public class SignalAnalysisController {
     }
 
     @GetMapping(value = "/image/single/{datasetId}")
-    public int[] singleRegion(@PathVariable Long datasetId,
-                              @RequestParam int startX,
-                              @RequestParam int startY,
-                              @RequestParam int width,
-                              @RequestParam int height) {
+    public double[] singleRegion(@PathVariable Long datasetId,
+                                 @RequestParam int startX,
+                                 @RequestParam int startY,
+                                 @RequestParam int width,
+                                 @RequestParam int height) {
         return imageAnalysisService.singleRegion(datasetId, startX, startY, width, height);
     }
 
     @GetMapping(value = "/image/multiple/{datasetId}")
-    public List<int[]> multiRegion(@PathVariable Long datasetId, @RequestParam int width, @RequestParam int height) {
+    public List<double[]> multiRegion(@PathVariable Long datasetId, @RequestParam int width, @RequestParam int height) {
         return imageAnalysisService.multiRegion(datasetId, width, height);
     }
 }

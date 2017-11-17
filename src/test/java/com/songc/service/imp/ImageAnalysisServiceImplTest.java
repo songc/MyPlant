@@ -61,7 +61,7 @@ public class ImageAnalysisServiceImplTest {
     @Test
     public void singleRegion() throws Exception {
         given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
-        int[] result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
+        double[] result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
         assertEquals(hbaseFileList.size(), result.length);
         System.out.println(result.length);
         System.out.println(Arrays.toString(result));
@@ -70,7 +70,7 @@ public class ImageAnalysisServiceImplTest {
     @Test
     public void multiRegion() throws Exception {
         given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
-        List<int[]> result = imageAnalysisService.multiRegion(100L, 50, 50);
+        List<double[]> result = imageAnalysisService.multiRegion(100L, 50, 50);
         assertEquals(hbaseFileList.size(), result.size());
         System.out.println(result.get(0).length);
         result.stream().map(Arrays::toString).forEach(System.out::println);

@@ -102,7 +102,7 @@ public class TiffImageTest {
         in.read(filecontent);
         in.close();
         TiffImage image = new TiffImage(filecontent, file.getName());
-        int[] averageValue = image.getAllRegionGrayAverage(50, 50);
+        double[] averageValue = image.getAllRegionGrayAverage(50, 50);
         System.out.println(averageValue.length);
         System.out.println(Arrays.toString(averageValue));
     }

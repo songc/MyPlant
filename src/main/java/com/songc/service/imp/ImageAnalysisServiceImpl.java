@@ -24,15 +24,15 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
     }
 
     @Override
-    public int[] singleRegion(Long datasetId, int startX, int startY, int width, int height) {
+    public double[] singleRegion(Long datasetId, int startX, int startY, int width, int height) {
         return hbaseService.findByParentId(datasetId).parallelStream()
                 .map(TiffImage::new)
-                .mapToInt(image -> image.getRegionGrayAverage(startX, startY, width, height))
+                .mapToDouble(image -> image.getRegionGrayAverage(startX, startY, width, height))
                 .toArray();
     }
 
     @Override
-    public List<int[]> multiRegion(Long datasetId, int width, int height) {
+    public List<double[]> multiRegion(Long datasetId, int width, int height) {
         return hbaseService.findByParentId(datasetId).parallelStream()
                 .map(TiffImage::new)
                 .map(image -> image.getAllRegionGrayAverage(width, height))

@@ -39,17 +39,17 @@ public class TiffImage {
         return ImageUtil.convert2Gray(this.getImage());
     }
 
-    public int getRegionGrayAverage(int startX, int startY, int width, int height) {
+    public double getRegionGrayAverage(int startX, int startY, int width, int height) {
         return ImageUtil.getRegionGrayAverage(this.convert2Gray(), startX, startY, width, height);
     }
 
-    public int[] getAllRegionGrayAverage(int regionWidth, int regionHeight) {
+    public double[] getAllRegionGrayAverage(int regionWidth, int regionHeight) {
         BufferedImage image = this.convert2Gray();
         int width = image.getWidth();
         int height = image.getHeight();
         int wNum = width / regionWidth;
         int hNum = height / regionHeight;
-        int[] result = new int[wNum * hNum];
+        double[] result = new double[wNum * hNum];
         for (int i = 0; i < wNum; i++) {
             for (int j = 0; j < hNum; j++) {
                 result[i * hNum + j] = ImageUtil.getRegionGrayAverage(image, regionHeight * i, regionHeight * j, regionWidth, regionHeight);

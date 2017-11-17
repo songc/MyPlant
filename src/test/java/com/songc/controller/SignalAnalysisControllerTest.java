@@ -80,7 +80,7 @@ public class SignalAnalysisControllerTest {
 
     @Test
     public void singleRegion() throws Exception {
-        int[] result = {1, 2, 3, 4, 5};
+        double[] result = {1, 2, 3, 4, 5};
         given(this.imageAnalysisService.singleRegion(100L, 50, 50, 50, 50))
                 .willReturn(result);
         this.mockMvc.perform(get("/analysis/image/single/100")
@@ -93,8 +93,8 @@ public class SignalAnalysisControllerTest {
 
     @Test
     public void multiRegion() throws Exception {
-        List<int[]> result = new ArrayList<>();
-        result.add(new int[]{1, 2, 4, 5, 6});
+        List<double[]> result = new ArrayList<>();
+        result.add(new double[]{1, 2, 4, 5, 6});
         given(this.imageAnalysisService.multiRegion(100L, 50, 50)).willReturn(result);
         this.mockMvc.perform(get("/analysis/image/multiple/100")
                 .param("width", "50")
