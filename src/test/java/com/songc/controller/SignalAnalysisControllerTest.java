@@ -1,6 +1,8 @@
 package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.songc.dto.MultiRegionSignalDTO;
+import com.songc.dto.SingleRegionSignalDTO;
 import com.songc.service.ImageAnalysisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,21 +82,26 @@ public class SignalAnalysisControllerTest {
 
     @Test
     public void singleRegion() throws Exception {
-        double[] result = {1, 2, 3, 4, 5};
+        double[] f = {1, 2, 3, 4, 5};
+        double[] f0 = {1, 2, 3, 4, 5};
+        SingleRegionSignalDTO singleRegionSignalDTO = new SingleRegionSignalDTO(f, f0);
         given(this.imageAnalysisService.singleRegion(100L, 50, 50, 50, 50))
-                .willReturn(result);
+                .willReturn(singleRegionSignalDTO);
         this.mockMvc.perform(get("/analysis/image/single/100")
                 .param("startX", "50")
                 .param("startY", "50").param("width", "50")
                 .param("height", "50"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(result)));
+                .andExpect(content().string(mapper.writeValueAsString(singleRegionSignalDTO)));
     }
 
     @Test
     public void multiRegion() throws Exception {
-        List<double[]> result = new ArrayList<>();
-        result.add(new double[]{1, 2, 4, 5, 6});
+        List<double[]> f = new ArrayList<>();
+        f.add(new double[]{1, 2, 4, 5, 6});
+        List<double[]> f0 = new ArrayList<>();
+        f0.add(new double[]{1, 2, 3, 4, 5, 6});
+        MultiRegionSignalDTO result = new MultiRegionSignalDTO(f, f0);
         given(this.imageAnalysisService.multiRegion(100L, 50, 50)).willReturn(result);
         this.mockMvc.perform(get("/analysis/image/multiple/100")
                 .param("width", "50")

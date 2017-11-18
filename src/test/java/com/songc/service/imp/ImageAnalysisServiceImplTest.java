@@ -1,5 +1,7 @@
 package com.songc.service.imp;
 
+import com.songc.dto.MultiRegionSignalDTO;
+import com.songc.dto.SingleRegionSignalDTO;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import com.songc.service.ImageAnalysisService;
@@ -60,20 +62,24 @@ public class ImageAnalysisServiceImplTest {
 
     @Test
     public void singleRegion() throws Exception {
+
         given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
-        double[] result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
-        assertEquals(hbaseFileList.size(), result.length);
-        System.out.println(result.length);
-        System.out.println(Arrays.toString(result));
+        SingleRegionSignalDTO result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
+
+        assertEquals(hbaseFileList.size(), result.getF().length);
+        System.out.println(result.getF().length);
+        System.out.println(Arrays.toString(result.getF()));
+        System.out.println(Arrays.toString(result.getF0()));
     }
 
     @Test
     public void multiRegion() throws Exception {
         given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
-        List<double[]> result = imageAnalysisService.multiRegion(100L, 50, 50);
-        assertEquals(hbaseFileList.size(), result.size());
-        System.out.println(result.get(0).length);
-        result.stream().map(Arrays::toString).forEach(System.out::println);
+        MultiRegionSignalDTO result = imageAnalysisService.multiRegion(100L, 50, 50);
+        assertEquals(hbaseFileList.size(), result.getF().get(0).length);
+        System.out.println(result.getF().get(0).length);
+        result.getF().stream().map(Arrays::toString).forEach(System.out::println);
+        result.getF0().stream().map(Arrays::toString).forEach(System.out::println);
     }
 
 }
