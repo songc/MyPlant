@@ -1,6 +1,8 @@
 package com.songc.util;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created By @author songc
@@ -32,6 +34,27 @@ public class ImageUtil {
             sum += i & 0xff;
         }
         return sum * 1.0 / data.length;
+    }
+
+    /**
+     * 对矩阵进行转置
+     *
+     * @param doubles 需要转置的矩阵
+     * @return 转置后的矩阵
+     */
+    public static List<double[]> getTranspose(List<double[]> doubles) {
+        int len = doubles.size();
+        int lenArray = doubles.get(0).length;
+        List<double[]> result = new ArrayList<>();
+        for (int i = 0; i < lenArray; i++) {
+            double[] array = new double[len];
+            int j = 0;
+            for (double[] aDouble : doubles) {
+                array[j++] = aDouble[i];
+            }
+            result.add(array);
+        }
+        return result;
     }
 
     private static int colorToRGB(int alpha, int red, int green, int blue) {

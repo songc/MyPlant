@@ -37,19 +37,4 @@ public class ExponentFitUtil {
         }
         return y;
     }
-
-    /**
-     * 生成函数 y=f(x)的 x 的double数组
-     *
-     * @param len   x的长度
-     * @param start x的起始值。步长为1递增。
-     * @return x的数组
-     */
-    public static double[] getX(int len, int start) {
-        double[] x = new double[len];
-        for (int i = 0; i < len; i++) {
-            x[i] = i + start;
-        }
-        return x;
-    }
 }

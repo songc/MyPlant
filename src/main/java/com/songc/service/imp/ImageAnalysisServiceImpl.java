@@ -10,9 +10,11 @@ import com.songc.util.ExponentFitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
+
+import static com.songc.util.ImageUtil.getTranspose;
 
 /**
  * Created By @author songc
@@ -22,7 +24,6 @@ import java.util.stream.Collectors;
 public class ImageAnalysisServiceImpl implements ImageAnalysisService {
 
     private HbaseService hbaseService;
-    private SignalFit signalFit;
 
     @Autowired
     public ImageAnalysisServiceImpl(HbaseService hbaseService) {
@@ -36,7 +37,7 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
                 .map(TiffImage::new)
                 .mapToDouble(image -> image.getRegionGrayAverage(startX, startY, width, height))
                 .toArray();
-        double[] x = ExponentFitUtil.getX(f.length, 1);
+        double[] x = LongStream.rangeClosed(1, f.length).asDoubleStream().toArray();
         double[] f0 = ExponentFitUtil.getOneExpFuncValue(SignalFit.fitOneExponent(x, f), x);
         return new SingleRegionSignalDTO(f, f0);
     }
@@ -49,30 +50,9 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
                 .collect(Collectors.toList());
         List<double[]> f = getTranspose(doubles);
         List<double[]> f0 = f.stream().map(s -> {
-            double[] x = ExponentFitUtil.getX(s.length, 1);
+            double[] x = LongStream.rangeClosed(1, s.length).asDoubleStream().toArray();
             return ExponentFitUtil.getOneExpFuncValue(SignalFit.fitOneExponent(x, s), x);
         }).collect(Collectors.toList());
         return new MultiRegionSignalDTO(f, f0);
-    }
-
-    /**
-     * 对矩阵进行转置
-     *
-     * @param doubles 需要转置的矩阵
-     * @return 转置后的矩阵
-     */
-    private List<double[]> getTranspose(List<double[]> doubles) {
-        int len = doubles.size();
-        int lenArray = doubles.get(0).length;
-        List<double[]> result = new ArrayList<>();
-        for (int i = 0; i < lenArray; i++) {
-            double[] array = new double[len];
-            int j = 0;
-            for (double[] aDouble : doubles) {
-                array[j++] = aDouble[i];
-            }
-            result.add(array);
-        }
-        return result;
     }
 }

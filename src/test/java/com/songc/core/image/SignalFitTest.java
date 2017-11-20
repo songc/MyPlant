@@ -1,9 +1,9 @@
 package com.songc.core.image;
 
-import com.songc.util.ExponentFitUtil;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.stream.LongStream;
 
 /**
  * Created By @author songc
@@ -16,7 +16,7 @@ public class SignalFitTest {
 
     @Test
     public void fit() {
-        double[] x = ExponentFitUtil.getX(data.length, 1);
+        double[] x = LongStream.rangeClosed(1, data.length).asDoubleStream().toArray();
         final double coeffs[] = SignalFit.fitOneExponent(x, data);
         System.out.println(Arrays.toString(coeffs));
         System.out.println(data.length);
@@ -24,7 +24,7 @@ public class SignalFitTest {
 
     @Test
     public void fitTwo() {
-        double[] x = ExponentFitUtil.getX(data.length, 1);
+        double[] x = LongStream.rangeClosed(1, data.length).asDoubleStream().toArray();
         final double[] coefs = SignalFit.fitDualExponent(x, data);
         System.out.println(Arrays.toString(coefs));
     }
