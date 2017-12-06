@@ -9,6 +9,10 @@ public class HbaseFileWithContentDTO {
     private Long parentId;
     private String name;
     private String content;
+    private Long sampleId;
+    private Long imageMetaId;
+    private Long cellularRecordingMetaId;
+    private Long environmentId;
 
     public HbaseFileWithContentDTO() {
     }
@@ -18,5 +22,9 @@ public class HbaseFileWithContentDTO {
         parentId = hbaseFile.getParentId();
         name = hbaseFile.getName();
         content = new String(hbaseFile.getContent());
+        sampleId = hbaseFile.getSampleId();
+        imageMetaId = hbaseFile.getImageMetaId();
+        cellularRecordingMetaId = hbaseFile.getCellularRecordingMetaId();
+        environmentId = hbaseFile.getEnvironmentId();
     }
 }

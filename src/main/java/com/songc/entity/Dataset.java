@@ -46,7 +46,13 @@ public class Dataset{
     @LastModifiedDate
     private Date updatedAt;
 
+    @Column(nullable = false)
     private Long userId;
+
+    private Long datasetMetaId;
+
+    private Long equipmentId;
+
 
     public Dataset(String name, String author, DatasetTypeEnum type, DatasetModeEnum state, String description, Long userId) {
         this.name = name;

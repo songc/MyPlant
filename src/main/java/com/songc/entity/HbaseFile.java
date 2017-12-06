@@ -8,6 +8,10 @@ public class HbaseFile {
     private Long parentId;
     private String name;
     private byte[] content;
+    private Long sampleId;
+    private Long imageMetaId;
+    private Long cellularRecordingMetaId;
+    private Long environmentId;
 
     public HbaseFile() {
 

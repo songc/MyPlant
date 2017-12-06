@@ -30,6 +30,10 @@ public class HbaseDao implements Hbase {
     private byte[] qParentId = Bytes.toBytes("parentId");
     private byte[] qName = Bytes.toBytes("name");
     private byte[] qContent = Bytes.toBytes("content");
+    private byte[] qSampleId = Bytes.toBytes("sampleId");
+    private byte[] qImageMetaId = Bytes.toBytes("imageMetaId");
+    private byte[] qCellularRecordingMetaId = Bytes.toBytes("cellularRecordingMetaId");
+    private byte[] qEnvironmentId = Bytes.toBytes("environment");
     private static byte[] qFamily;
 
     static {
@@ -47,18 +51,14 @@ public class HbaseDao implements Hbase {
     public HbaseFile save(HbaseFile hbaseFile) {
 
         String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
-        hbaseFile.setRowKey(rowKey);
-        Put p = new Put(rowKey.getBytes());
-        p.addColumn(family.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
-        p.addColumn(family.getBytes(), qName, hbaseFile.getName().getBytes());
-        p.addColumn(family.getBytes(), qContent, hbaseFile.getContent());
+        Put p = getPut(hbaseFile, rowKey);
         try {
             Table table = connection.getTable(TableName.valueOf(tableName));
             table.put(p);
+            hbaseFile.setRowKey(rowKey);
             return hbaseFile;
         } catch (IOException e) {
             e.printStackTrace();
-            hbaseFile.setRowKey(null);
         }
         return hbaseFile;
     }
@@ -69,10 +69,7 @@ public class HbaseDao implements Hbase {
         for (HbaseFile hbaseFile : hbaseFiles) {
             String rowKey = HbaseUtil.convertRowKey(hbaseFile.getParentId());
             hbaseFile.setRowKey(rowKey);
-            Put p = new Put(Bytes.toBytes(rowKey));
-            p.addColumn(qFamily, qParentId, Bytes.toBytes(hbaseFile.getParentId()));
-            p.addColumn(qFamily, qName, hbaseFile.getName().getBytes());
-            p.addColumn(qFamily, qContent, hbaseFile.getContent());
+            Put p = getPut(hbaseFile, rowKey);
             puts.add(p);
         }
         try {
@@ -85,19 +82,38 @@ public class HbaseDao implements Hbase {
         return hbaseFiles;
     }
 
+    private Put getPut(HbaseFile hbaseFile, String rowKey) {
+        Put p = new Put(Bytes.toBytes(rowKey));
+        p.addColumn(qFamily, qParentId, Bytes.toBytes(hbaseFile.getParentId()));
+        p.addColumn(qFamily, qName, hbaseFile.getName().getBytes());
+        p.addColumn(qFamily, qContent, hbaseFile.getContent());
+        if (hbaseFile.getCellularRecordingMetaId() != null) {
+            p.addColumn(qFamily, qCellularRecordingMetaId, Bytes.toBytes(hbaseFile.getCellularRecordingMetaId()));
+        }
+        if (hbaseFile.getSampleId() != null) {
+            p.addColumn(qFamily, qSampleId, Bytes.toBytes(hbaseFile.getSampleId()));
+        }
+        if (hbaseFile.getImageMetaId() != null) {
+            p.addColumn(qFamily, qImageMetaId, Bytes.toBytes(hbaseFile.getImageMetaId()));
+        }
+        if (hbaseFile.getEnvironmentId() != null) {
+            p.addColumn(qFamily, qEnvironmentId, Bytes.toBytes(hbaseFile.getEnvironmentId()));
+        }
+        return p;
+    }
+
     @Override
     public HbaseFile find(String rowKey) {
         Get g = new Get(rowKey.getBytes());
+        HbaseFile hbaseFile = null;
         try {
             Table table = connection.getTable(TableName.valueOf(tableName));
             Result result = table.get(g);
-            return new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId)),
-                    Bytes.toString(result.getValue(qFamily, qName)),
-                    result.getValue(qFamily, qContent));
+            hbaseFile = getHbaseFile(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return hbaseFile;
     }
 
     @Override
@@ -108,8 +124,8 @@ public class HbaseDao implements Hbase {
         results = getScanner(scan);
         if (results != null) {
             for (Result result : results) {
-                hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
-                        , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
+                HbaseFile hbaseFile = getHbaseFile(result);
+                hbaseFiles.add(hbaseFile);
             }
         }
         return hbaseFiles;
@@ -136,11 +152,29 @@ public class HbaseDao implements Hbase {
         List<HbaseFile> hbaseFiles = new ArrayList<>();
         if (results != null) {
             for (Result result : results) {
-                hbaseFiles.add(new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
-                        , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent)));
+                HbaseFile hbaseFile = getHbaseFile(result);
+                hbaseFiles.add(hbaseFile);
             }
         }
         return hbaseFiles;
+    }
+
+    private HbaseFile getHbaseFile(Result result) {
+        HbaseFile hbaseFile = new HbaseFile(new String(result.getRow()), Bytes.toLong(result.getValue(qFamily, qParentId))
+                , Bytes.toString(result.getValue(qFamily, qName)), result.getValue(qFamily, qContent));
+        if (result.getValue(qFamily, qEnvironmentId) != null) {
+            hbaseFile.setEnvironmentId(Bytes.toLong(result.getValue(qFamily, qEnvironmentId)));
+        }
+        if (result.getValue(qFamily, qImageMetaId) != null) {
+            hbaseFile.setImageMetaId(Bytes.toLong(result.getValue(qFamily, qImageMetaId)));
+        }
+        if (result.getValue(qFamily, qSampleId) != null) {
+            hbaseFile.setSampleId(Bytes.toLong(result.getValue(qFamily, qSampleId)));
+        }
+        if (result.getValue(qFamily, qCellularRecordingMetaId) != null) {
+            hbaseFile.setCellularRecordingMetaId(Bytes.toLong(result.getValue(qFamily, qCellularRecordingMetaId)));
+        }
+        return hbaseFile;
     }
 
     @Override
@@ -190,11 +224,11 @@ public class HbaseDao implements Hbase {
         scan.setFilter(filterList);
         List<byte[]> rowKeys = new ArrayList<>();
         ResultScanner results = getScanner(scan);
-        if (results != null) {
-            for (Result result : results) {
-                rowKeys.add(result.getRow());
-            }
+        assert results != null;
+        for (Result result : results) {
+            rowKeys.add(result.getRow());
         }
+        results.close();
         return rowKeys;
     }
 }

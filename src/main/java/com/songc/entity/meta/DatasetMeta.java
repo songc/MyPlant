@@ -27,7 +27,7 @@ public class DatasetMeta {
     private String position;
     private String stimulus;
     private String signalType;
-    private String details;
+    private String detail;
     private String paper;
     @CreatedDate
     private Date createdAt;
