@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created By @author songc
@@ -40,7 +41,7 @@ public class DatasetMetaDaoTest {
         assertEquals(datasetMetaList.size(), datasetMetaList1.size());
         assertEquals(datasetMetaList2.size(), 0);
         DatasetMeta datasetMeta = datasetMetaList1.get(0);
-        assertEquals(datasetMeta.getCreatedAt(), datasetMeta.getUpdatedAt());
+        assertNotNull(datasetMeta.getUpdatedAt());
         System.out.println(datasetMeta.getCreatedAt());
     }
 
