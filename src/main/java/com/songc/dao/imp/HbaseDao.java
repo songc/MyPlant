@@ -33,7 +33,8 @@ public class HbaseDao implements Hbase {
     private byte[] qSampleId = Bytes.toBytes("sampleId");
     private byte[] qImageMetaId = Bytes.toBytes("imageMetaId");
     private byte[] qCellularRecordingMetaId = Bytes.toBytes("cellularRecordingMetaId");
-    private byte[] qEnvironmentId = Bytes.toBytes("environment");
+    private byte[] qEnvironmentId = Bytes.toBytes("environmentId");
+    private byte[] qSoftwareId = Bytes.toBytes("softwareId");
     private static byte[] qFamily;
 
     static {
@@ -98,6 +99,9 @@ public class HbaseDao implements Hbase {
         }
         if (hbaseFile.getEnvironmentId() != null) {
             p.addColumn(qFamily, qEnvironmentId, Bytes.toBytes(hbaseFile.getEnvironmentId()));
+        }
+        if (hbaseFile.getSoftwareId() != null) {
+            p.addColumn(qFamily, qSoftwareId, Bytes.toBytes(hbaseFile.getSoftwareId()));
         }
         return p;
     }
@@ -173,6 +177,9 @@ public class HbaseDao implements Hbase {
         }
         if (result.getValue(qFamily, qCellularRecordingMetaId) != null) {
             hbaseFile.setCellularRecordingMetaId(Bytes.toLong(result.getValue(qFamily, qCellularRecordingMetaId)));
+        }
+        if (result.getValue(qFamily, qSoftwareId) != null) {
+            hbaseFile.setSoftwareId(Bytes.toLong(result.getValue(qFamily, qSoftwareId)));
         }
         return hbaseFile;
     }

@@ -1,5 +1,6 @@
 package com.songc.service.imp;
 
+import com.songc.dto.FileMeta;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import com.songc.service.MultipartFileService;
@@ -38,7 +39,7 @@ public class MultipartFileServiceImpl implements MultipartFileService {
     }
 
     @Override
-    public List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles) {
+    public List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles, FileMeta fileMeta) {
         List<HbaseFile> files = multipartFiles.stream()
                 .filter(s -> !s.isEmpty())
                 .map(multipartFile -> {
@@ -51,7 +52,7 @@ public class MultipartFileServiceImpl implements MultipartFileService {
                         e.printStackTrace();
                     }
                     return file;
-                }).collect(Collectors.toList());
+                }).map(file -> file.setFileMeta(fileMeta)).collect(Collectors.toList());
         return hbaseService.save(files);
     }
 }

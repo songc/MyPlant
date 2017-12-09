@@ -12,7 +12,7 @@ import java.util.List;
  * on 2017/12/4
  */
 @RestController
-@RequestMapping(value = "/user/{userId}/cellularRecording")
+@RequestMapping(value = "/user/{userId}/cellularRecordingMeta")
 public class CellularRecordingMetaController {
     private CellularRecordingMetaDao cellularRecordingMetaDao;
 

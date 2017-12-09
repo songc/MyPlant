@@ -1,5 +1,6 @@
 package com.songc.controller;
 
+import com.songc.dto.FileMeta;
 import com.songc.dto.HbaseFileDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.HbaseFile;
@@ -67,8 +68,20 @@ public class DatasetController {
     }
 
     @PostMapping(value = "/{id}/file")
-    public List<HbaseFileDTO> save(@PathVariable("id") Long parentId, @RequestParam("files") List<MultipartFile> multipartFiles) {
-        List<HbaseFile> hbaseFileList = multipartFileService.save(parentId, multipartFiles);
+    public List<HbaseFileDTO> save(@PathVariable("id") Long parentId,
+                                   @RequestParam("files") List<MultipartFile> multipartFiles,
+                                   @RequestParam(value = "environmentId", required = false) Long environmentId,
+                                   @RequestParam(value = "softwareId", required = false) Long softwareId,
+                                   @RequestParam(value = "imageMetaId", required = false) Long imageMetaId,
+                                   @RequestParam(value = "iecMetaId", required = false) Long iecMetaId,
+                                   @RequestParam(value = "sampleId", required = false) Long sampleId) {
+        FileMeta fileMeta = new FileMeta();
+        fileMeta.setSoftwareId(softwareId);
+        fileMeta.setIecMetaId(iecMetaId);
+        fileMeta.setEnvironmentId(environmentId);
+        fileMeta.setImageMetaId(imageMetaId);
+        fileMeta.setSampleId(sampleId);
+        List<HbaseFile> hbaseFileList = multipartFileService.save(parentId, multipartFiles, fileMeta);
         return MapperUtil.convert(hbaseFileList);
     }
 

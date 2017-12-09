@@ -42,7 +42,7 @@ public class CellularRecordingMetaControllerTest {
 
     private CellularRecordingMeta cellularRecordingMeta = new CellularRecordingMeta();
 
-    private String baseUrl = "/user/100/cellularRecording";
+    private String baseUrl = "/user/100/cellularRecordingMeta";
 
     private ObjectMapper objectMapper = new ObjectMapper();
 

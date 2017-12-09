@@ -33,7 +33,7 @@ public class SampleController {
     }
 
     @GetMapping
-    public List<Sample> findByUserId(Long userId) {
+    public List<Sample> findByUserId(@PathVariable(value = "userId") Long userId) {
         return sampleDao.findByUserId(userId);
     }
 

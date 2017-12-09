@@ -1,5 +1,6 @@
 package com.songc.service;
 
+import com.songc.dto.FileMeta;
 import com.songc.entity.HbaseFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,5 +9,5 @@ import java.util.List;
 public interface MultipartFileService {
     HbaseFile save(Long parentId, MultipartFile multipartFile);
 
-    List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles);
+    List<HbaseFile> save(Long parentId, List<MultipartFile> multipartFiles, FileMeta fileMeta);
 }

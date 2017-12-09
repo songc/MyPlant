@@ -1,6 +1,7 @@
 package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.songc.dto.FileMeta;
 import com.songc.entity.Dataset;
 import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
@@ -22,6 +23,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,10 +120,16 @@ public class DatasetControllerTest {
     @SuppressWarnings("unchecked")
     public void save1() throws Exception {
         MockMultipartFile file = new MockMultipartFile("songc", "content".getBytes());
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("environmentId", "100");
+        params.add("softwareId", "100");
+        params.add("sampleId", "100");
+        params.add("imageMetaId", "100");
         List<HbaseFile> hbaseFiles = new ArrayList<>();
         hbaseFiles.add(new HbaseFile());
-        given(multipartFileService.save(any(Long.TYPE), anyList())).willReturn(hbaseFiles);
-        mockMvc.perform(fileUpload("/dataset/1/file").file(file).file(file))
+        given(multipartFileService.save(anyLong(), anyList(), any(FileMeta.class))).willReturn(hbaseFiles);
+        mockMvc.perform(fileUpload("/dataset/1/file").file(file).file(file)
+                .params(params))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(hbaseFiles))));
     }

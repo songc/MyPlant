@@ -1,5 +1,6 @@
 package com.songc.entity;
 
+import com.songc.dto.FileMeta;
 import lombok.Data;
 
 @Data
@@ -12,6 +13,7 @@ public class HbaseFile {
     private Long imageMetaId;
     private Long cellularRecordingMetaId;
     private Long environmentId;
+    private Long softwareId;
 
     public HbaseFile() {
 
@@ -28,5 +30,24 @@ public class HbaseFile {
         this.parentId = parentId;
         this.name = name;
         this.content = content;
+    }
+
+    public HbaseFile setFileMeta(FileMeta fileMeta) {
+        if (fileMeta.getEnvironmentId() != null) {
+            this.setEnvironmentId(fileMeta.getEnvironmentId());
+        }
+        if (fileMeta.getIecMetaId() != null) {
+            this.setCellularRecordingMetaId(fileMeta.getIecMetaId());
+        }
+        if (fileMeta.getImageMetaId() != null) {
+            this.setImageMetaId(fileMeta.getImageMetaId());
+        }
+        if (fileMeta.getSoftwareId() != null) {
+            this.setSoftwareId(fileMeta.getSoftwareId());
+        }
+        if (fileMeta.getSampleId() != null) {
+            this.setSampleId(fileMeta.getSampleId());
+        }
+        return this;
     }
 }
