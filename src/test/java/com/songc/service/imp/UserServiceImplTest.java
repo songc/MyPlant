@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = UserServiceImpl.class)
 public class UserServiceImplTest {
 
     @MockBean

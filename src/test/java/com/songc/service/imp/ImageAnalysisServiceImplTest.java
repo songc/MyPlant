@@ -28,7 +28,7 @@ import static org.mockito.Matchers.anyLong;
  * on 2017/11/7
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = ImageAnalysisServiceImpl.class)
 public class ImageAnalysisServiceImplTest {
     private static final String PATH = "F:\\Download\\software\\彩图";
     private List<HbaseFile> hbaseFileList;

@@ -1,5 +1,6 @@
 package com.songc.dao.imp;
 
+import com.songc.config.HbaseConfiguration;
 import com.songc.entity.HbaseFile;
 import org.junit.After;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = {HbaseDao.class, HbaseConfiguration.class})
 @ActiveProfiles("test")
 public class HbaseDaoTest {
     @Autowired

@@ -1,5 +1,6 @@
 package com.songc.service.imp;
 
+import com.songc.dto.FileMeta;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import com.songc.service.MultipartFileService;
@@ -20,7 +21,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = MultipartFileServiceImpl.class)
 public class MultipartFileServiceImplTest {
 
     @MockBean
@@ -46,10 +47,11 @@ public class MultipartFileServiceImplTest {
         HbaseFile hbaseFile = new HbaseFile();
         hbaseFile.setParentId(id);
         hbaseFiles.add(hbaseFile);
+        FileMeta fileMeta = new FileMeta();
         given(hbaseService.save(hbaseFiles)).willReturn(hbaseFiles);
         List<MultipartFile> multipartFiles = new ArrayList<>();
         multipartFiles.add(mock(MultipartFile.class));
-        List<HbaseFile> hbaseFiles1 = multipartFileService.save(id, multipartFiles);
+        List<HbaseFile> hbaseFiles1 = multipartFileService.save(id, multipartFiles, fileMeta);
         assertEquals(1, hbaseFiles1.size());
         assertEquals(id, hbaseFiles1.get(0).getParentId());
     }

@@ -25,7 +25,7 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = DatasetServiceImpl.class)
 public class DatasetServiceImplTest {
 
     @MockBean
