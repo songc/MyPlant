@@ -11,7 +11,7 @@ public class HbaseFileWithContentDTO {
     private String content;
     private Long sampleId;
     private Long imageMetaId;
-    private Long cellularRecordingMetaId;
+    private Long iecMetaId;
     private Long environmentId;
 
     public HbaseFileWithContentDTO() {
@@ -24,7 +24,7 @@ public class HbaseFileWithContentDTO {
         content = new String(hbaseFile.getContent());
         sampleId = hbaseFile.getSampleId();
         imageMetaId = hbaseFile.getImageMetaId();
-        cellularRecordingMetaId = hbaseFile.getCellularRecordingMetaId();
+        iecMetaId = hbaseFile.getIecMetaId();
         environmentId = hbaseFile.getEnvironmentId();
     }
 }

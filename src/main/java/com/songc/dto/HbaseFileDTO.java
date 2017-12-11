@@ -13,7 +13,7 @@ public class HbaseFileDTO {
     private String name;
     private Long sampleId;
     private Long imageMetaId;
-    private Long cellularRecordingMetaId;
+    private Long iecMetaId;
     private Long environmentId;
 
     public HbaseFileDTO() {
@@ -25,7 +25,7 @@ public class HbaseFileDTO {
         name = hbaseFile.getName();
         sampleId = hbaseFile.getSampleId();
         imageMetaId = hbaseFile.getImageMetaId();
-        cellularRecordingMetaId = hbaseFile.getCellularRecordingMetaId();
+        iecMetaId = hbaseFile.getIecMetaId();
         environmentId = hbaseFile.getEnvironmentId();
     }
 }

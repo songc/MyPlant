@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class CellularRecordingMeta {
+public class IecMeta {
     @Id
     @GeneratedValue
     private Long id;

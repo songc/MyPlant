@@ -11,7 +11,7 @@ public class HbaseFile {
     private byte[] content;
     private Long sampleId;
     private Long imageMetaId;
-    private Long cellularRecordingMetaId;
+    private Long iecMetaId;
     private Long environmentId;
     private Long softwareId;
 
@@ -37,7 +37,7 @@ public class HbaseFile {
             this.setEnvironmentId(fileMeta.getEnvironmentId());
         }
         if (fileMeta.getIecMetaId() != null) {
-            this.setCellularRecordingMetaId(fileMeta.getIecMetaId());
+            this.setIecMetaId(fileMeta.getIecMetaId());
         }
         if (fileMeta.getImageMetaId() != null) {
             this.setImageMetaId(fileMeta.getImageMetaId());

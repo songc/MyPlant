@@ -1,6 +1,6 @@
 package com.songc.dao;
 
-import com.songc.entity.meta.CellularRecordingMeta;
+import com.songc.entity.meta.IecMeta;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +18,24 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class CellularRecordingMetaDaoTest {
+public class IecMetaDaoTest {
     private Long userId = 100L;
 
     @Autowired
-    private CellularRecordingMetaDao cellularRecordingMetaDao;
+    private IecMetaDao iecMetaDao;
 
     @Test
     public void findByUserId() throws Exception {
-        List<CellularRecordingMeta> recordingMetaList = new ArrayList<>();
+        List<IecMeta> recordingMetaList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            CellularRecordingMeta recordingMeta = new CellularRecordingMeta();
+            IecMeta recordingMeta = new IecMeta();
             recordingMeta.setUserId(userId);
             recordingMeta.setName("songc" + i);
             recordingMetaList.add(recordingMeta);
         }
-        cellularRecordingMetaDao.save(recordingMetaList);
-        List<CellularRecordingMeta> recordingMetaList1 = cellularRecordingMetaDao.findByUserId(userId);
-        List<CellularRecordingMeta> recordingMetaList2 = cellularRecordingMetaDao.findByUserId(userId - 1);
+        iecMetaDao.save(recordingMetaList);
+        List<IecMeta> recordingMetaList1 = iecMetaDao.findByUserId(userId);
+        List<IecMeta> recordingMetaList2 = iecMetaDao.findByUserId(userId - 1);
         assertEquals(recordingMetaList.size(), recordingMetaList1.size());
         assertEquals(recordingMetaList2.size(), 0);
     }
