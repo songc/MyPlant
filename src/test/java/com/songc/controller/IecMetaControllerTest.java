@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -44,11 +43,13 @@ public class IecMetaControllerTest {
 
     private String baseUrl = "/user/100/iecMeta";
 
+    private Long userId = 100L;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     {
         iecMeta.setName("songc");
-        iecMeta.setUserId(100L);
+        iecMeta.setUserId(userId);
     }
 
     @Test
@@ -73,7 +74,7 @@ public class IecMetaControllerTest {
     public void findByUserId() throws Exception {
         List<IecMeta> recordingMetaList = new ArrayList<>();
         recordingMetaList.add(iecMeta);
-        given(this.iecMetaDao.findByUserId(anyLong())).willReturn(recordingMetaList);
+        given(this.iecMetaDao.findByUserId(userId)).willReturn(recordingMetaList);
         mvc.perform(get(baseUrl).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(recordingMetaList)))
                 .andExpect(status().isOk())

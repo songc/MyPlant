@@ -34,7 +34,7 @@ public class ImageMetaController {
     }
 
     @GetMapping
-    public List<ImageMeta> findByUserId(Long userId) {
+    public List<ImageMeta> findByUserId(@PathVariable("userId") Long userId) {
         return imageMetaDao.findByUserId(userId);
     }
 

@@ -14,6 +14,7 @@ public class HbaseFileDTO {
     private Long sampleId;
     private Long imageMetaId;
     private Long iecMetaId;
+    private Long softwareId;
     private Long environmentId;
 
     public HbaseFileDTO() {
@@ -26,6 +27,7 @@ public class HbaseFileDTO {
         sampleId = hbaseFile.getSampleId();
         imageMetaId = hbaseFile.getImageMetaId();
         iecMetaId = hbaseFile.getIecMetaId();
+        softwareId = hbaseFile.getSoftwareId();
         environmentId = hbaseFile.getEnvironmentId();
     }
 }

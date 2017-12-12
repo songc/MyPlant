@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,8 +44,10 @@ public class EquipmentControllerTest {
     private String baseUrl = "/user/100/equipment";
     private Equipment equipment = new Equipment();
 
+    private Long userId = 100L;
+
     {
-        equipment.setUserId(100L);
+        equipment.setUserId(userId);
         equipment.setName("songc");
     }
 
@@ -72,7 +73,7 @@ public class EquipmentControllerTest {
     public void findByUserId() throws Exception {
         List<Equipment> equipmentList = new ArrayList<>();
         equipmentList.add(equipment);
-        given(equipmentDao.findByUserId(anyLong())).willReturn(equipmentList);
+        given(equipmentDao.findByUserId(userId)).willReturn(equipmentList);
         mockMvc.perform(get(baseUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(equipmentList)));

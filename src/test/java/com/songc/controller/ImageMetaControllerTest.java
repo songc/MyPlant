@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -44,10 +43,11 @@ public class ImageMetaControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
     private String baseUrl = "/user/100/imageMeta";
     private ImageMeta imageMeta = new ImageMeta();
+    private Long userId = 100L;
 
     {
         imageMeta.setName("songc");
-        imageMeta.setUserId(100L);
+        imageMeta.setUserId(userId);
     }
 
     @Test
@@ -72,10 +72,11 @@ public class ImageMetaControllerTest {
     public void findByUserId() throws Exception {
         List<ImageMeta> imageMetaList = new ArrayList<>();
         imageMetaList.add(imageMeta);
-        given(imageMetaDao.findByUserId(anyLong())).willReturn(imageMetaList);
+        given(imageMetaDao.findByUserId(userId)).willReturn(imageMetaList);
         mockMvc.perform(get(baseUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(imageMetaList)));
+        verify(imageMetaDao).findByUserId(userId);
     }
 
     @Test

@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -44,9 +43,10 @@ public class EnvironmentControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
     private String baseUrl = "/user/100/environment";
     private Environment environment = new Environment();
+    private Long userId = 100L;
 
     {
-        environment.setUserId(100L);
+        environment.setUserId(userId);
         environment.setName("songc");
     }
 
@@ -72,7 +72,7 @@ public class EnvironmentControllerTest {
     public void findByUserId() throws Exception {
         List<Environment> environmentList = new ArrayList<>();
         environmentList.add(environment);
-        given(dao.findByUserId(anyLong())).willReturn(environmentList);
+        given(dao.findByUserId(userId)).willReturn(environmentList);
         mockMvc.perform(get(baseUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(environmentList)));

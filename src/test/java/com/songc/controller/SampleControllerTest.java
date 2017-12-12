@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,9 +44,11 @@ public class SampleControllerTest {
     private String baseUrl = "/user/100/sample";
     private Sample sample = new Sample();
 
+    private final long userId = 100L;
+
     {
         sample.setName("songc");
-        sample.setUserId(100L);
+        sample.setUserId(userId);
     }
 
     @Test
@@ -72,7 +73,7 @@ public class SampleControllerTest {
     public void findByUserId() throws Exception {
         List<Sample> sampleList = new ArrayList<>();
         sampleList.add(sample);
-        given(sampleDao.findByUserId(anyLong())).willReturn(sampleList);
+        given(sampleDao.findByUserId(userId)).willReturn(sampleList);
         mockMvc.perform(get(baseUrl).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(sampleList)))
                 .andExpect(status().isOk())

@@ -19,7 +19,6 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -43,12 +42,13 @@ public class DatasetMetaControllerTest {
     private DatasetMeta datasetMeta = new DatasetMeta();
 
     private String baseUrl = "/user/100/datasetMeta";
+    private Long userId = 100L;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     {
         datasetMeta.setName("songc");
-        datasetMeta.setUserId(100L);
+        datasetMeta.setUserId(userId);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class DatasetMetaControllerTest {
     public void findByUserId() throws Exception {
         List<DatasetMeta> datasetMetaList = new ArrayList<>();
         datasetMetaList.add(datasetMeta);
-        given(this.datasetMetaDao.findByUserId(anyLong())).willReturn(datasetMetaList);
+        given(this.datasetMetaDao.findByUserId(userId)).willReturn(datasetMetaList);
         mvc.perform(get(baseUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(datasetMetaList)));
