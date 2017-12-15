@@ -2,6 +2,7 @@ package com.songc.controller;
 
 import com.songc.dto.FileMeta;
 import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
@@ -87,12 +88,12 @@ public class DatasetController {
 
     @GetMapping(value = "/{id}/file")
     public List<HbaseFileDTO> findFile(@PathVariable("id") Long parentId) {
-        return MapperUtil.convert(datasetService.findFile(parentId));
+        return datasetService.findFile(parentId);
     }
 
     @GetMapping(value = "/{id}/zip")
     public void download(@PathVariable("id") Long parentId, @RequestParam("name") String datasetName, HttpServletResponse response) throws IOException {
-        List<HbaseFile> hbaseFileList = datasetService.findFile(parentId);
+        List<HbaseFileWithContentDTO> hbaseFileList = datasetService.findWithContentFile(parentId);
         HbaseUtil.convert2Zip(response, hbaseFileList, datasetName);
     }
 }

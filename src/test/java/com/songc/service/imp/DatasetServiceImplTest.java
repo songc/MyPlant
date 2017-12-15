@@ -1,8 +1,9 @@
 package com.songc.service.imp;
 
 import com.songc.dao.DatasetDao;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.Dataset;
-import com.songc.entity.HbaseFile;
 import com.songc.service.DatasetService;
 import com.songc.service.HbaseService;
 import org.junit.Test;
@@ -95,14 +96,23 @@ public class DatasetServiceImplTest {
         verify(hbaseService).deleteByParentId(id);
     }
 
+    @Test
+    public void findWithContentFile() {
+        Long id = 100L;
+        List<HbaseFileWithContentDTO> hbaseFiles = new ArrayList<>();
+        hbaseFiles.add(new HbaseFileWithContentDTO());
+        given(hbaseService.findContentByParentId(id)).willReturn(hbaseFiles);
+        List<HbaseFileWithContentDTO> hbaseFiles1 = datasetService.findWithContentFile(id);
+        assertEquals(hbaseFiles.size(), hbaseFiles1.size());
+    }
 
     @Test
     public void findFile() {
         Long id = 100L;
-        List<HbaseFile> hbaseFiles = new ArrayList<>();
-        hbaseFiles.add(new HbaseFile());
+        List<HbaseFileDTO> hbaseFiles = new ArrayList<>();
+        hbaseFiles.add(new HbaseFileDTO());
         given(hbaseService.findByParentId(id)).willReturn(hbaseFiles);
-        List<HbaseFile> hbaseFiles1 = datasetService.findFile(id);
+        List<HbaseFileDTO> hbaseFiles1 = datasetService.findFile(id);
         assertEquals(hbaseFiles.size(), hbaseFiles1.size());
     }
 

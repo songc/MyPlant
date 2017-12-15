@@ -1,6 +1,6 @@
 package com.songc.core.image;
 
-import com.songc.entity.HbaseFile;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.util.ImageUtil;
 import org.junit.Test;
 
@@ -85,7 +85,7 @@ public class TiffImageTest {
         byte[] fileContent = new byte[length.intValue()];
         in.read(fileContent);
         in.close();
-        HbaseFile hbaseFile = new HbaseFile();
+        HbaseFileWithContentDTO hbaseFile = new HbaseFileWithContentDTO();
         hbaseFile.setContent(fileContent);
         hbaseFile.setName(file.getName());
         TiffImage image = new TiffImage(hbaseFile);

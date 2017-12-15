@@ -43,11 +43,12 @@ public class HbaseFileControllerTest {
 
     @Test
     public void find() throws Exception {
-        HbaseFile hbaseFile = new HbaseFile("123456", 100L, "23.csv", "wrefds".getBytes());
-        given(hbaseService.find("123456")).willReturn(hbaseFile);
+        HbaseFile hbaseFile1 = new HbaseFile("123456", 100L, "23.csv", "wrefds".getBytes());
+        HbaseFileWithContentDTO hbaseFile = new HbaseFileWithContentDTO(hbaseFile1);
+        given(hbaseService.findContent("123456")).willReturn(hbaseFile);
         mockMvc.perform(get("/hbase/123456"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(new HbaseFileWithContentDTO(hbaseFile))));
+                .andExpect(content().string(mapper.writeValueAsString(hbaseFile)));
     }
 
     @Test
@@ -61,7 +62,8 @@ public class HbaseFileControllerTest {
         HbaseFile hbaseFile = new HbaseFile();
         hbaseFile.setName(file.getName());
         hbaseFile.setContent(fileContent);
-        given(hbaseService.find(anyString())).willReturn(hbaseFile);
+        HbaseFileWithContentDTO hbaseFile1 = new HbaseFileWithContentDTO(hbaseFile);
+        given(hbaseService.findContent(anyString())).willReturn(hbaseFile1);
         mockMvc.perform(get("/hbase/png/123456"))
                 .andExpect(status().isOk());
     }

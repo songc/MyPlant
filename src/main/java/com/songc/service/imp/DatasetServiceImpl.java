@@ -1,8 +1,9 @@
 package com.songc.service.imp;
 
 import com.songc.dao.DatasetDao;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.Dataset;
-import com.songc.entity.HbaseFile;
 import com.songc.service.DatasetService;
 import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,12 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public List<HbaseFile> findFile(Long parentId) {
+    public List<HbaseFileWithContentDTO> findWithContentFile(Long parentId) {
+        return hbaseService.findContentByParentId(parentId);
+    }
+
+    @Override
+    public List<HbaseFileDTO> findFile(Long parentId) {
         return hbaseService.findByParentId(parentId);
     }
 

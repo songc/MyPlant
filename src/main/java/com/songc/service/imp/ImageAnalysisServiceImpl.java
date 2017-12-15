@@ -33,7 +33,7 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
     @Override
     public SingleRegionSignalDTO singleRegion(Long datasetId, int startX, int startY, int width, int height) {
 
-        double[] f = hbaseService.findByParentId(datasetId).parallelStream()
+        double[] f = hbaseService.findContentByParentId(datasetId).parallelStream()
                 .map(TiffImage::new)
                 .mapToDouble(image -> image.getRegionGrayAverage(startX, startY, width, height))
                 .toArray();
@@ -44,7 +44,7 @@ public class ImageAnalysisServiceImpl implements ImageAnalysisService {
 
     @Override
     public MultiRegionSignalDTO multiRegion(Long datasetId, int width, int height) {
-        List<double[]> doubles = hbaseService.findByParentId(datasetId).parallelStream()
+        List<double[]> doubles = hbaseService.findContentByParentId(datasetId).parallelStream()
                 .map(TiffImage::new)
                 .map(image -> image.getAllRegionGrayAverage(width, height))
                 .collect(Collectors.toList());

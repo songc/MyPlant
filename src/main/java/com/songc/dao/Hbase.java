@@ -1,5 +1,7 @@
 package com.songc.dao;
 
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 
 import java.util.List;
@@ -9,11 +11,13 @@ public interface Hbase {
 
     List<HbaseFile> save(List<HbaseFile> hbaseFiles);
 
-    HbaseFile find(String rowKey);
+    HbaseFileWithContentDTO find(String rowKey);
 
-    List<HbaseFile> findAll();
+    List<HbaseFileDTO> findAll();
 
-    List<HbaseFile> findByParentId(Long parentId);
+    List<HbaseFileDTO> findByParentId(Long parentId);
+
+    List<HbaseFileWithContentDTO> findContentByParentId(Long parentId);
 
     List<byte[]> getRowKeysByParentId(Long parentId);
 

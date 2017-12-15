@@ -2,6 +2,8 @@ package com.songc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.songc.dto.FileMeta;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.Dataset;
 import com.songc.entity.HbaseFile;
 import com.songc.entity.data.StatusEnum;
@@ -136,16 +138,16 @@ public class DatasetControllerTest {
 
     @Test
     public void findFile() throws Exception {
-        List<HbaseFile> files = new ArrayList<>();
+        List<HbaseFileDTO> files = new ArrayList<>();
         given(datasetService.findFile(any(Long.TYPE))).willReturn(files);
         this.mockMvc.perform(get("/dataset/1/file"))
-                .andExpect(content().string(mapper.writeValueAsString(MapperUtil.convert(files))));
+                .andExpect(content().string(mapper.writeValueAsString(files)));
     }
 
     @Test
     public void download() throws Exception {
-        List<HbaseFile> files = new ArrayList<>();
-        given(datasetService.findFile(anyLong())).willReturn(files);
+        List<HbaseFileWithContentDTO> files = new ArrayList<>();
+        given(datasetService.findWithContentFile(anyLong())).willReturn(files);
         this.mockMvc.perform(get("/dataset/1/zip?name=songc"))
                 .andExpect(status().isOk());
     }

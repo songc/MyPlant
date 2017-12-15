@@ -1,6 +1,8 @@
 package com.songc.service.imp;
 
 import com.songc.dao.imp.HbaseDao;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import org.junit.Test;
@@ -41,24 +43,37 @@ public class HbaseServiceImplTest {
     public void find() throws Exception {
         String rowKey = "songc";
         Long id = 100L;
-        HbaseFile hbaseFile = new HbaseFile();
-        hbaseFile.setParentId(id);
+        HbaseFileWithContentDTO hbaseFile = new HbaseFileWithContentDTO();
+        hbaseFile.setRowKey(rowKey);
         given(hbaseDao.find(rowKey)).willReturn(hbaseFile);
-        HbaseFile hbaseFile1 = hbaseService.find(rowKey);
-        assertEquals(id, hbaseFile1.getParentId());
+        HbaseFileWithContentDTO hbaseFile1 = hbaseService.findContent(rowKey);
+        assertEquals(rowKey, hbaseFile1.getRowKey());
     }
 
     @Test
     public void findByParentId() throws Exception {
         Long id = 100L;
-        List<HbaseFile> hbaseFiles = new ArrayList<>();
-        HbaseFile hbaseFile = new HbaseFile();
+        List<HbaseFileDTO> hbaseFiles = new ArrayList<>();
+        HbaseFileDTO hbaseFile = new HbaseFileDTO();
         hbaseFile.setParentId(id);
         hbaseFiles.add(hbaseFile);
         given(hbaseDao.findByParentId(id)).willReturn(hbaseFiles);
-        List<HbaseFile> hbaseFiles1 = hbaseService.findByParentId(id);
+        List<HbaseFileDTO> hbaseFiles1 = hbaseService.findByParentId(id);
         assertEquals(1, hbaseFiles1.size());
         assertEquals(id, hbaseFiles1.get(0).getParentId());
+    }
+
+    @Test
+    public void findContentByParentId() throws Exception {
+        Long id = 100L;
+        List<HbaseFileWithContentDTO> hbaseFiles = new ArrayList<>();
+        HbaseFileWithContentDTO hbaseFile = new HbaseFileWithContentDTO();
+        hbaseFile.setRowKey(id.toString());
+        hbaseFiles.add(hbaseFile);
+        given(hbaseDao.findContentByParentId(id)).willReturn(hbaseFiles);
+        List<HbaseFileWithContentDTO> hbaseFiles1 = hbaseService.findContentByParentId(id);
+        assertEquals(1, hbaseFiles1.size());
+        assertEquals(id.toString(), hbaseFiles1.get(0).getRowKey());
     }
 
     @Test

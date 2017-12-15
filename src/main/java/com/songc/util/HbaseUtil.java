@@ -1,7 +1,7 @@
 package com.songc.util;
 
 import com.songc.core.image.TiffImage;
-import com.songc.entity.HbaseFile;
+import com.songc.dto.HbaseFileWithContentDTO;
 import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.ImageIO;
@@ -21,14 +21,14 @@ public class HbaseUtil {
                 + String.format("%016d", HF_ID++);
     }
 
-    public static void convert2Zip(HttpServletResponse response, List<HbaseFile> hbaseFileList, String name) throws IOException {
+    public static void convert2Zip(HttpServletResponse response, List<HbaseFileWithContentDTO> hbaseFileList, String name) throws IOException {
         response.reset();
         response.setCharacterEncoding("utf-8");
         response.setContentType("application/zip");
         response.setHeader("Content-Disposition", "attachment;filename=\"" + name + ".zip" + "\"");
         ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(response.getOutputStream()));
         int i = 1;
-        for (HbaseFile hbaseFile : hbaseFileList) {
+        for (HbaseFileWithContentDTO hbaseFile : hbaseFileList) {
             zipOutputStream.putNextEntry(new ZipEntry(i++ + "_" + hbaseFile.getName()));
             OutputStream outputStream = new DataOutputStream(zipOutputStream);
             outputStream.write(hbaseFile.getContent());
@@ -37,7 +37,7 @@ public class HbaseUtil {
         zipOutputStream.close();
     }
 
-    public static byte[] getPngBytes(HbaseFile hbaseFile) throws IOException {
+    public static byte[] getPngBytes(HbaseFileWithContentDTO hbaseFile) throws IOException {
         TiffImage tiffImage = new TiffImage(hbaseFile);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         ImageIO.write(tiffImage.getImage(), "png", out);

@@ -1,6 +1,8 @@
 package com.songc.service.imp;
 
 import com.songc.dao.imp.HbaseDao;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,18 @@ public class HbaseServiceImpl implements HbaseService {
     }
 
     @Override
-    public HbaseFile find(String rowKey) {
+    public HbaseFileWithContentDTO findContent(String rowKey) {
         return hbaseDao.find(rowKey);
     }
 
     @Override
-    public List<HbaseFile> findByParentId(Long parentId) {
+    public List<HbaseFileDTO> findByParentId(Long parentId) {
         return hbaseDao.findByParentId(parentId);
+    }
+
+    @Override
+    public List<HbaseFileWithContentDTO> findContentByParentId(Long parentId) {
+        return hbaseDao.findContentByParentId(parentId);
     }
 
     @Override

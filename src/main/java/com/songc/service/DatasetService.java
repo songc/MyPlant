@@ -1,7 +1,8 @@
 package com.songc.service;
 
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.Dataset;
-import com.songc.entity.HbaseFile;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -23,7 +24,9 @@ public interface DatasetService {
 
     List<Dataset> findByUserId(Long userId);
 
-    List<HbaseFile> findFile(Long parentId);
+    List<HbaseFileWithContentDTO> findWithContentFile(Long parentId);
+
+    List<HbaseFileDTO> findFile(Long parentId);
 
     void delete(Long id);
 

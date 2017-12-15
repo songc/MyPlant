@@ -6,25 +6,15 @@ import lombok.Data;
 @Data
 public class HbaseFileWithContentDTO {
     private String rowKey;
-    private Long parentId;
+    private byte[] content;
     private String name;
-    private String content;
-    private Long sampleId;
-    private Long imageMetaId;
-    private Long iecMetaId;
-    private Long environmentId;
 
     public HbaseFileWithContentDTO() {
     }
 
     public HbaseFileWithContentDTO(HbaseFile hbaseFile) {
-        rowKey = hbaseFile.getRowKey();
-        parentId = hbaseFile.getParentId();
         name = hbaseFile.getName();
-        content = new String(hbaseFile.getContent());
-        sampleId = hbaseFile.getSampleId();
-        imageMetaId = hbaseFile.getImageMetaId();
-        iecMetaId = hbaseFile.getIecMetaId();
-        environmentId = hbaseFile.getEnvironmentId();
+        rowKey = hbaseFile.getRowKey();
+        content = hbaseFile.getContent();
     }
 }

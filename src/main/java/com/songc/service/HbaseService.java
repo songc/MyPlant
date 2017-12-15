@@ -1,5 +1,7 @@
 package com.songc.service;
 
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 
 import java.util.List;
@@ -9,9 +11,11 @@ public interface HbaseService{
 
     List<HbaseFile> save(List<HbaseFile> files);
 
-    HbaseFile find(String rowKey);
+    HbaseFileWithContentDTO findContent(String rowKey);
 
-    List<HbaseFile> findByParentId(Long parentId);
+    List<HbaseFileDTO> findByParentId(Long parentId);
+
+    List<HbaseFileWithContentDTO> findContentByParentId(Long parentId);
 
     void delete(String rowKey);
 

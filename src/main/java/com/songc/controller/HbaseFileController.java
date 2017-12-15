@@ -24,12 +24,12 @@ public class HbaseFileController {
 
     @GetMapping(value = "/{rowKey}")
     public HbaseFileWithContentDTO find(@PathVariable("rowKey") String rowKey) {
-        return new HbaseFileWithContentDTO(hbaseService.find(rowKey));
+        return hbaseService.findContent(rowKey);
     }
 
     @GetMapping(value = "/png/{rowKey}", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getPng(@PathVariable("rowKey") String rowKey) throws IOException {
-        return HbaseUtil.getPngBytes(hbaseService.find(rowKey));
+        return HbaseUtil.getPngBytes(hbaseService.findContent(rowKey));
     }
 
     @DeleteMapping(value = "/{rowKey}")

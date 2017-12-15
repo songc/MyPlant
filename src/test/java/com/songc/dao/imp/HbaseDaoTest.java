@@ -1,6 +1,8 @@
 package com.songc.dao.imp;
 
 import com.songc.config.HbaseConfiguration;
+import com.songc.dto.HbaseFileDTO;
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.entity.HbaseFile;
 import org.junit.After;
 import org.junit.Test;
@@ -32,11 +34,12 @@ public class HbaseDaoTest {
     public void save() throws Exception {
         HbaseFile hbaseFile = new HbaseFile(id, name, content);
         hbaseDao.save(hbaseFile);
-        List<HbaseFile> hbaseFiles1 = hbaseDao.findByParentId(id);
+        List<HbaseFileDTO> hbaseFiles1 = hbaseDao.findByParentId(id);
         assertEquals(1, hbaseFiles1.size());
         assertEquals(id, hbaseFiles1.get(0).getParentId());
         assertEquals(name, hbaseFiles1.get(0).getName());
-        assertEquals(Arrays.toString(content), Arrays.toString(hbaseFiles1.get(0).getContent()));
+        List<HbaseFileWithContentDTO> hbaseFiles2 = hbaseDao.findContentByParentId(id);
+        assertEquals(Arrays.toString(content), Arrays.toString(hbaseFiles2.get(0).getContent()));
     }
 
     @Test
@@ -46,11 +49,13 @@ public class HbaseDaoTest {
             hbaseFiles.add(new HbaseFile(id, name, content));
         }
         hbaseDao.save(hbaseFiles);
-        List<HbaseFile> hbaseFiles1 = hbaseDao.findByParentId(id);
+        List<HbaseFileDTO> hbaseFiles1 = hbaseDao.findByParentId(id);
         assertEquals(10, hbaseFiles1.size());
         assertEquals(id, hbaseFiles1.get(0).getParentId());
         assertEquals(name, hbaseFiles1.get(0).getName());
-        assertEquals(new String(content), new String(hbaseFiles1.get(0).getContent()));
+        List<HbaseFileWithContentDTO> hbaseFiles2 = hbaseDao.findContentByParentId(id);
+        assertEquals(10, hbaseFiles2.size());
+        assertEquals(new String(content), new String(hbaseFiles2.get(0).getContent()));
     }
 
     @Test
@@ -60,15 +65,13 @@ public class HbaseDaoTest {
         assertEquals(1, rowKeys.size());
         System.out.println(rowKeys.size());
         System.out.println(new String(rowKeys.get(0)));
-        HbaseFile hbaseFile = hbaseDao.find(new String(rowKeys.get(0)));
-        assertEquals(id, hbaseFile.getParentId());
-        assertEquals(name, hbaseFile.getName());
+        HbaseFileWithContentDTO hbaseFile = hbaseDao.find(new String(rowKeys.get(0)));
         assertEquals(new String(content), new String(hbaseFile.getContent()));
     }
 
     @Test
     public void findAll() throws Exception {
-        List<HbaseFile> files = hbaseDao.findAll();
+        List<HbaseFileDTO> files = hbaseDao.findAll();
         assertNotNull(files);
         System.out.println(files.size());
     }
@@ -80,8 +83,20 @@ public class HbaseDaoTest {
             hbaseFiles.add(new HbaseFile(id, name, content));
         }
         hbaseDao.save(hbaseFiles);
-        List<HbaseFile> hbaseFiles1 = hbaseDao.findByParentId(id);
+        List<HbaseFileDTO> hbaseFiles1 = hbaseDao.findByParentId(id);
         assertEquals(10, hbaseFiles1.size());
+    }
+
+    @Test
+    public void findContentByParentId() throws Exception {
+        List<HbaseFile> hbaseFiles = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            hbaseFiles.add(new HbaseFile(id, name, content));
+        }
+        hbaseDao.save(hbaseFiles);
+        List<HbaseFileWithContentDTO> hbaseFiles1 = hbaseDao.findContentByParentId(id);
+        assertEquals(10, hbaseFiles1.size());
+        assertEquals(new String(content), new String(hbaseFiles1.get(5).getContent()));
     }
 
     @Test

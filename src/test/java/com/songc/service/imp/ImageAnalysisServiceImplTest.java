@@ -1,5 +1,6 @@
 package com.songc.service.imp;
 
+import com.songc.dto.HbaseFileWithContentDTO;
 import com.songc.dto.MultiRegionSignalDTO;
 import com.songc.dto.SingleRegionSignalDTO;
 import com.songc.entity.HbaseFile;
@@ -31,7 +32,7 @@ import static org.mockito.Matchers.anyLong;
 @SpringBootTest(classes = ImageAnalysisServiceImpl.class)
 public class ImageAnalysisServiceImplTest {
     private static final String PATH = "F:\\Download\\software\\彩图";
-    private List<HbaseFile> hbaseFileList;
+    private List<HbaseFileWithContentDTO> hbaseFileList;
 
     @Autowired
     ImageAnalysisService imageAnalysisService;
@@ -52,18 +53,18 @@ public class ImageAnalysisServiceImplTest {
                 in.close();
                 hbaseFile.setContent(content);
                 hbaseFile.setName(file1.getName());
-                return hbaseFile;
+                return new HbaseFileWithContentDTO(hbaseFile);
             } catch (java.io.IOException e) {
                 e.printStackTrace();
             }
-            return hbaseFile;
+            return new HbaseFileWithContentDTO(hbaseFile);
         }).collect(Collectors.toList());
     }
 
     @Test
     public void singleRegion() throws Exception {
 
-        given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
+        given(this.hbaseService.findContentByParentId(anyLong())).willReturn(hbaseFileList);
         SingleRegionSignalDTO result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
 
         assertEquals(hbaseFileList.size(), result.getF().length);
@@ -74,7 +75,7 @@ public class ImageAnalysisServiceImplTest {
 
     @Test
     public void multiRegion() throws Exception {
-        given(this.hbaseService.findByParentId(anyLong())).willReturn(hbaseFileList);
+        given(this.hbaseService.findContentByParentId(anyLong())).willReturn(hbaseFileList);
         MultiRegionSignalDTO result = imageAnalysisService.multiRegion(100L, 50, 50);
         assertEquals(hbaseFileList.size(), result.getF().get(0).length);
         System.out.println(result.getF().get(0).length);
