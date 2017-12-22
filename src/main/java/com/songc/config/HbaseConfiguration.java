@@ -4,6 +4,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
 import java.io.IOException;
@@ -11,16 +12,22 @@ import java.io.IOException;
 @org.springframework.context.annotation.Configuration
 public class HbaseConfiguration {
 
-    private Configuration configuration;
-
+    @Value("${hbase.rootdir}")
+    private String rootDir;
+    @Value("${hbase.quorum}")
+    private String quorum;
+    @Value("${hbase.clientPort}")
+    private String clientPort;
+    @Value("${hbase.maxSize}")
+    private String maxSize;
 
     @Bean
     public Connection initialize() throws IOException {
-        configuration = HBaseConfiguration.create();
-        configuration.set("hbase.roodir", "hdfs://hbase-spark:9000/hbase");
-        configuration.set("hbase.zookeeper.quorum", "hbase-spark,hbase-spark1,hbase-spark2");
-        configuration.set("hbase.zookeeper.property.clientPort", "2181");
-        configuration.set("hbase.client.keyvalue.maxsize", "524288000");
+        Configuration configuration = HBaseConfiguration.create();
+        configuration.set("hbase.roodir", rootDir);
+        configuration.set("hbase.zookeeper.quorum", quorum);
+        configuration.set("hbase.zookeeper.property.clientPort", clientPort);
+        configuration.set("hbase.client.keyvalue.maxsize", maxSize);
         return ConnectionFactory.createConnection(configuration);
     }
 }
