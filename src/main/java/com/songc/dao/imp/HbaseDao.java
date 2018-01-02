@@ -197,7 +197,6 @@ public class HbaseDao implements Hbase {
         Put p = new Put(Bytes.toBytes(rowKey));
         p.addColumn(metaFamily.getBytes(), qParentId, Bytes.toBytes(hbaseFile.getParentId()));
         p.addColumn(metaFamily.getBytes(), qName, hbaseFile.getName().getBytes());
-        p.addColumn(metaFamily.getBytes(), qContent, hbaseFile.getContent());
         if (hbaseFile.getIecMetaId() != null) {
             p.addColumn(metaFamily.getBytes(), qIecMetaId, Bytes.toBytes(hbaseFile.getIecMetaId()));
         }

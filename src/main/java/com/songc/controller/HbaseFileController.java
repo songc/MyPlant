@@ -1,6 +1,6 @@
 package com.songc.controller;
 
-import com.songc.dto.HbaseFileWithContentDTO;
+import com.songc.dto.HbaseFileWithStringContentDTO;
 import com.songc.entity.data.StatusEnum;
 import com.songc.service.HbaseService;
 import com.songc.util.HbaseUtil;
@@ -23,8 +23,8 @@ public class HbaseFileController {
     }
 
     @GetMapping(value = "/{rowKey}")
-    public HbaseFileWithContentDTO find(@PathVariable("rowKey") String rowKey) {
-        return hbaseService.findContent(rowKey);
+    public HbaseFileWithStringContentDTO find(@PathVariable("rowKey") String rowKey) {
+        return new HbaseFileWithStringContentDTO(hbaseService.findContent(rowKey));
     }
 
     @GetMapping(value = "/png/{rowKey}", produces = MediaType.IMAGE_PNG_VALUE)
