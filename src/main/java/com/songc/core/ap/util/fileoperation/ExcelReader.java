@@ -4,6 +4,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,9 +51,9 @@ public class ExcelReader {
     }
 
     //按列读取Excel数据
-    public ArrayList<ArrayList<String>> readExcelByColumns(String filePath, int sheetNum) throws IOException {
+    public ArrayList<ArrayList<String>> readExcelByColumns(File file, int sheetNum) throws IOException {
         //创建文件流对象
-        FileInputStream fileInputStream = new FileInputStream(filePath);
+        FileInputStream fileInputStream = new FileInputStream(file);
         //通过文件流对象创建一个工作簿
         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
         //通过工作簿创建一个电子表对象
