@@ -55,7 +55,7 @@ public class HbaseFileControllerTest {
 
     @Test
     public void getPng() throws Exception {
-        String path = "C:\\Users\\songc\\Desktop\\restful\\1.png";
+        String path = "C:\\Users\\songc\\Desktop\\临时\\1.png";
         File file = new File(path);
         InputStream in = new FileInputStream(file);
         Long length = file.length();

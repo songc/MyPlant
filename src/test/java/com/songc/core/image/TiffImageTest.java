@@ -38,7 +38,7 @@ public class TiffImageTest {
         String path = "F:\\Download\\software\\彩图\\1011165442.tiff";
         BufferedImage bufferedImage = ImageIO.read(new File(path));
         BufferedImage grayImage = ImageUtil.convert2Gray(bufferedImage);
-        File newFile = new File("C:\\Users\\songc\\Desktop\\MouseWithoutBorders\\3.tiff");
+        File newFile = new File("C:\\Users\\songc\\Desktop\\临时\\3.tiff");
         ImageIO.write(grayImage, "tiff", newFile);
     }
 
@@ -52,7 +52,7 @@ public class TiffImageTest {
         in.read(filecontent);
         in.close();
         TiffImage image = new TiffImage(filecontent, file.getName());
-        File newFile = new File("C:\\Users\\songc\\Desktop\\MouseWithoutBorders\\4.tiff");
+        File newFile = new File("C:\\Users\\songc\\Desktop\\临时\\4.tiff");
         ImageIO.write(image.getImage(), "tiff", newFile);
     }
 
@@ -89,7 +89,7 @@ public class TiffImageTest {
         hbaseFile.setContent(fileContent);
         hbaseFile.setName(file.getName());
         TiffImage image = new TiffImage(hbaseFile);
-        ImageIO.write(image.getImage(), "png", new File("C:\\Users\\songc\\Desktop\\restful\\1.png"));
+        ImageIO.write(image.getImage(), "png", new File("C:\\Users\\songc\\Desktop\\临时\\1.png"));
     }
 
     @Test
