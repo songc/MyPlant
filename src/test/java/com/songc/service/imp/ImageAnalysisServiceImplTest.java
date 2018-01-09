@@ -1,8 +1,6 @@
 package com.songc.service.imp;
 
 import com.songc.dto.HbaseFileWithContentDTO;
-import com.songc.dto.MultiRegionSignalDTO;
-import com.songc.dto.SingleRegionSignalDTO;
 import com.songc.entity.HbaseFile;
 import com.songc.service.HbaseService;
 import com.songc.service.ImageAnalysisService;
@@ -20,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyLong;
 
@@ -29,7 +26,7 @@ import static org.mockito.Matchers.anyLong;
  * on 2017/11/7
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ImageAnalysisServiceImpl.class)
+@SpringBootTest
 public class ImageAnalysisServiceImplTest {
     private static final String PATH = "F:\\Download\\software\\彩图";
     private List<HbaseFileWithContentDTO> hbaseFileList;
@@ -65,22 +62,22 @@ public class ImageAnalysisServiceImplTest {
     public void singleRegion() throws Exception {
 
         given(this.hbaseService.findContentByParentId(anyLong())).willReturn(hbaseFileList);
-        SingleRegionSignalDTO result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
-
-        assertEquals(hbaseFileList.size(), result.getF().length);
-        System.out.println(result.getF().length);
-        System.out.println(Arrays.toString(result.getF()));
-        System.out.println(Arrays.toString(result.getF0()));
+        String result = imageAnalysisService.singleRegion(100L, 50, 50, 50, 50);
+//        assertEquals(hbaseFileList.size(), result.getF().length);
+//        System.out.println(result.getF().length);
+//        System.out.println(Arrays.toString(result.getF()));
+        System.out.println(result);
     }
 
     @Test
     public void multiRegion() throws Exception {
         given(this.hbaseService.findContentByParentId(anyLong())).willReturn(hbaseFileList);
-        MultiRegionSignalDTO result = imageAnalysisService.multiRegion(100L, 50, 50);
-        assertEquals(hbaseFileList.size(), result.getF().get(0).length);
-        System.out.println(result.getF().get(0).length);
-        result.getF().stream().map(Arrays::toString).forEach(System.out::println);
-        result.getF0().stream().map(Arrays::toString).forEach(System.out::println);
+        String result = imageAnalysisService.multiRegion(100L, 50, 50);
+//        assertEquals(hbaseFileList.size(), result.getF().get(0).length);
+//        System.out.println(result.getF().get(0).length);
+//        result.getF().stream().map(Arrays::toString).forEach(System.out::println);
+//        result.getF0().stream().map(Arrays::toString).forEach(System.out::println);
+        System.out.println(result);
     }
 
 }

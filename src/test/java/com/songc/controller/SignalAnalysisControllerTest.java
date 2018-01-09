@@ -86,7 +86,7 @@ public class SignalAnalysisControllerTest {
         double[] f0 = {1, 2, 3, 4, 5};
         SingleRegionSignalDTO singleRegionSignalDTO = new SingleRegionSignalDTO(f, f0);
         given(this.imageAnalysisService.singleRegion(100L, 50, 50, 50, 50))
-                .willReturn(singleRegionSignalDTO);
+                .willReturn(mapper.writeValueAsString(singleRegionSignalDTO));
         this.mockMvc.perform(get("/analysis/image/single/100")
                 .param("startX", "50")
                 .param("startY", "50").param("width", "50")
@@ -102,7 +102,7 @@ public class SignalAnalysisControllerTest {
         List<double[]> f0 = new ArrayList<>();
         f0.add(new double[]{1, 2, 3, 4, 5, 6});
         MultiRegionSignalDTO result = new MultiRegionSignalDTO(f, f0);
-        given(this.imageAnalysisService.multiRegion(100L, 50, 50)).willReturn(result);
+        given(this.imageAnalysisService.multiRegion(100L, 50, 50)).willReturn(mapper.writeValueAsString(result));
         this.mockMvc.perform(get("/analysis/image/multiple/100")
                 .param("width", "50")
                 .param("height", "50"))

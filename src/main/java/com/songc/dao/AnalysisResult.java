@@ -2,8 +2,10 @@ package com.songc.dao;
 
 /**
  * Created By @author songc
- * on 2018/1/5
+ * on 2018/1/9
  */
-public class AnalysisResult {
-    private String rowKey;
+public interface AnalysisResult {
+    String save(String rowKey, String json);
+
+    String find(String rowKey);
 }

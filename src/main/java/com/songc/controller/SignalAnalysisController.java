@@ -3,8 +3,6 @@ package com.songc.controller;
 import com.songc.core.ap.APExtractService;
 import com.songc.core.ap.APJudgeService;
 import com.songc.core.ap.detect.wave.APInRawWave;
-import com.songc.dto.MultiRegionSignalDTO;
-import com.songc.dto.SingleRegionSignalDTO;
 import com.songc.service.ImageAnalysisService;
 import com.songc.util.SmoothFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +43,16 @@ public class SignalAnalysisController {
     }
 
     @GetMapping(value = "/image/single/{datasetId}")
-    public SingleRegionSignalDTO singleRegion(@PathVariable Long datasetId,
-                                              @RequestParam int startX,
-                                              @RequestParam int startY,
-                                              @RequestParam int width,
-                                              @RequestParam int height) {
+    public String singleRegion(@PathVariable Long datasetId,
+                               @RequestParam int startX,
+                               @RequestParam int startY,
+                               @RequestParam int width,
+                               @RequestParam int height) {
         return imageAnalysisService.singleRegion(datasetId, startX, startY, width, height);
     }
 
     @GetMapping(value = "/image/multiple/{datasetId}")
-    public MultiRegionSignalDTO multiRegion(@PathVariable Long datasetId, @RequestParam int width, @RequestParam int height) {
+    public String multiRegion(@PathVariable Long datasetId, @RequestParam int width, @RequestParam int height) {
         return imageAnalysisService.multiRegion(datasetId, width, height);
     }
 }
