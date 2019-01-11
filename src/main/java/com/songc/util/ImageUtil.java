@@ -10,6 +10,12 @@ import java.util.List;
  */
 public class ImageUtil {
 
+    /**
+     * 将RGB图像转换为灰度图像
+     *
+     * @param bufferedImage 原始图像文件
+     * @return 转换后的灰度图像
+     */
     public static BufferedImage convert2Gray(BufferedImage bufferedImage) {
         BufferedImage grayImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
         for (int i = 0; i < bufferedImage.getWidth(); i++) {
@@ -26,6 +32,15 @@ public class ImageUtil {
         return grayImage;
     }
 
+    /**
+     * 计算图像的区域的灰度平均值
+     * @param image 图像
+     * @param startX 区域的起点X位置，区域的左上角和图片左上角的水平距离
+     * @param startY 区域的起点Y位置，区域的左上角和图片左上角的垂直距离
+     * @param width 区域的宽度
+     * @param height 区域的高度
+     * @return 区域的灰度平均值
+     */
     public static double getRegionGrayAverage(BufferedImage image, int startX, int startY, int width, int height) {
         int[] data = new int[width * height];
         data = image.getRGB(startX, startY, width, height, data, 0, width);
@@ -57,6 +72,14 @@ public class ImageUtil {
         return result;
     }
 
+    /**
+     * rgb转换为int类型
+     * @param alpha 透明度
+     * @param red  R的值
+     * @param green  G的值
+     * @param blue B的值
+     * @return 转换后的int类型的值
+     */
     private static int colorToRGB(int alpha, int red, int green, int blue) {
 
         int newPixel = 0;

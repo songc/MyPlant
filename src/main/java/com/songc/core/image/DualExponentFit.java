@@ -39,6 +39,7 @@ public class DualExponentFit extends AbstractCurveFitter {
 
     /**
      * 2,y = a*exp(b*x) + c*exp(d*x)
+     * 双指数拟合
      */
     class TwoExponentFunc implements ParametricUnivariateFunction {
 

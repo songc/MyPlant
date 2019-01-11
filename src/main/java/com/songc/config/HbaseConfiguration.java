@@ -21,6 +21,12 @@ public class HbaseConfiguration {
     @Value("${hbase.maxSize}")
     private String maxSize;
 
+    /**
+     * 启动前必须打开HBase，不然该方法会报错，造成启动失败
+     *
+     * @return HBase 的connection对象，用于连接HBase 进行HBase的相关操作
+     * @throws IOException
+     */
     @Bean
     public Connection initialize() throws IOException {
         Configuration configuration = HBaseConfiguration.create();

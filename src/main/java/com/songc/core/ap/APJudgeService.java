@@ -34,6 +34,11 @@ public class APJudgeService {
         return waveList;
     }
 
+    /**
+     * 判断信号是否为AP
+     *
+     * @return
+     */
     public List<Boolean> isAP() {
         List<Wave> waveList = init();
         List<Boolean> result = new ArrayList<>();

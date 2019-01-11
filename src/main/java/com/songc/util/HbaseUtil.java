@@ -15,12 +15,25 @@ import java.util.zip.ZipOutputStream;
 public class HbaseUtil {
     private static Long HF_ID = 0L;
 
+    /**
+     * 根据数据集的id生成数据文件的rowKey
+     *
+     * @param parentId 数据集的id
+     * @return 生成的rowKey。
+     */
     public static String convertRowKey(Long parentId) {
         return StringUtils.reverse(String.format("%016d", parentId))
                 + (Long.MAX_VALUE - Instant.now().toEpochMilli())
                 + String.format("%016d", HF_ID++);
     }
 
+    /**
+     * 修改response http的响应对象，将数据集的zip压缩文件信息写入response对象的数据流。
+     * @param response  http的response对象
+     * @param hbaseFileList  数据集的文件列表
+     * @param name 压缩文件名
+     * @throws IOException
+     */
     public static void convert2Zip(HttpServletResponse response, List<HbaseFileWithContentDTO> hbaseFileList, String name) throws IOException {
         response.reset();
         response.setCharacterEncoding("utf-8");
@@ -37,6 +50,12 @@ public class HbaseUtil {
         zipOutputStream.close();
     }
 
+    /**
+     *将图像文件转换为png格式的二进制内容
+     * @param hbaseFile 原始图像文件（tiff格式或者其他格式）
+     * @return png格式的二进制内容
+     * @throws IOException
+     */
     public static byte[] getPngBytes(HbaseFileWithContentDTO hbaseFile) throws IOException {
         TiffImage tiffImage = new TiffImage(hbaseFile);
         ByteArrayOutputStream out = new ByteArrayOutputStream();

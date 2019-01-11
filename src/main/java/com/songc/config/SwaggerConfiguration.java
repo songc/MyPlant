@@ -11,6 +11,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * Swagger 的页面的配置，RESTful接口文档页面。
+ * 启动后访问http://localhost:8080/swagger-ui.html#/ 可以看到文档页面。
  * Created By @author songc on 2017/10/25
  */
 @Configuration

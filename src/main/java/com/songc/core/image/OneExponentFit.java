@@ -39,6 +39,7 @@ public class OneExponentFit extends AbstractCurveFitter {
 
     /**
      * y = a*exp(b*x)
+     * 单指数拟合
      */
     class OneExponentFunc implements ParametricUnivariateFunction {
         @Override

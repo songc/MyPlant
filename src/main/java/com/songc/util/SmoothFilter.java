@@ -7,6 +7,13 @@ import java.util.List;
  * @author songc
  */
 public class SmoothFilter {
+    /**
+     * 滑动滤波
+     *
+     * @param insList     需要滤波的一维信号
+     * @param windowWidth 窗口大小
+     * @return 滤波后的信号
+     */
     public static List<double[]> filter(List<Double[]> insList, int windowWidth) {
         List<double[]> res = new ArrayList<>();
         for (Double[] ins : insList) {
