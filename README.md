@@ -39,7 +39,7 @@
 
 1. 编译：双击Maven的Package，对项目进行编译打包，生成jar文件，位于`target`文件夹加下。
 
-   ![maven](E:\MyFile\交接材料\文档\maven.png)
+   [![maven.png](https://i.loli.net/2019/01/11/5c3853c7165a8.png)](https://i.loli.net/2019/01/11/5c3853c7165a8.png)
 
    2. 启动：运行编译生成的jar包。命令如下：
 
