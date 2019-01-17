@@ -28,6 +28,9 @@
 - target  ## 代码编译后的程序文件文件夹
 - **pom.xml ## 项目依赖Maven的配置文件**
 
+#### 调用关系图
+![Myplant 调用关系图.png](https://i.loli.net/2019/01/15/5c3de48a67250.png)
+
 #### 依赖和系统需求
 
 1. JAVA：JDK8.0 以上。
